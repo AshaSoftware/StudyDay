@@ -38,9 +38,9 @@
     </TableRow>
 
     <TableRow
+        android:background="#c9c9c9"
         android:paddingBottom="3dp"
-        android:paddingTop="3dp"
-        android:background="#c9c9c9">
+        android:paddingTop="3dp">
 
         <TextView
             android:layout_width="0dp"
@@ -85,12 +85,18 @@
             android:text="@string/saturday"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_weight="1">
 
         <GridView
             android:id="@+id/calendar"
-            android:layout_width="0dp"
-            android:layout_span="7"
-            android:layout_weight="1"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:horizontalSpacing="0dp"
+            android:numColumns="7"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="0dp"/>
     </TableRow>
 </TableLayout>
