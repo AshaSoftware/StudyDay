@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -99,21 +98,23 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
             updateCalendar();
         } else if( v == monthtextview ) {
             AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>( getContext(),
-                                                                           android.R.layout.simple_list_item_1,
-                                                                           getResources().getTextArray( R.array.months ) );
+
             builder.setTitle( R.string.alert_dialog_month );
             builder.setCancelable( true );
-            builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+            final NumberPicker numberPicker = new NumberPicker( getContext() );
+            numberPicker.setMinValue( 1 );
+            numberPicker.setMaxValue( 12 );
+            numberPicker.setValue( calendar.get( Calendar.MONTH ) + 1 );
+            builder.setView( numberPicker );
+            builder.setPositiveButton( R.string.words_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {
-                    calendar.set( Calendar.MONTH, which );
+                    calendar.set( Calendar.MONTH, numberPicker.getValue() - 1 );
                     updateCalendar();
-                    dialog.cancel();
                 }
             } );
-            builder.setNegativeButton( R.string.words_cancel, CANCEL_DIALOG );
 
+            builder.setNegativeButton( R.string.words_cancel, CANCEL_DIALOG );
             builder.create().show();
         } else if( v == yeatextview ) {
             AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
