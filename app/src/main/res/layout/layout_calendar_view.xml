@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <TableRow
+        android:background="#177650">
+
+        <ImageView
+            android:id="@+id/prev_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.14"
+            android:src="@drawable/arrow_left"/>
+
+        <TextView
+            android:id="@+id/month_value"
+            android:layout_width="0dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="0.357"
+            android:gravity="center"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:id="@+id/year_value"
+            android:layout_width="0dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="0.357"
+            android:gravity="center"
+            android:textColor="#FFF"/>
+
+        <ImageView
+            android:id="@+id/next_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.14"
+            android:src="@drawable/arrow_right"/>
+    </TableRow>
+
+    <TableRow
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:background="#c9c9c9">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/sunday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/monday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/tuesday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/wednesday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/thursday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/friday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.14"
+            android:gravity="center"
+            android:text="@string/saturday"/>
+    </TableRow>
+
+    <TableRow>
+
+        <GridView
+            android:id="@+id/calendar"
+            android:layout_width="0dp"
+            android:layout_span="7"
+            android:layout_weight="1"/>
+    </TableRow>
+</TableLayout>
