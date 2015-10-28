@@ -1,6 +1,8 @@
 package com.ashasoftware.studyday;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,10 +10,12 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -76,19 +80,68 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
         if( day >= 1 && day <= 31 ) calendar.set( Calendar.DATE, day );
     }
 
+    private final static DialogInterface.OnClickListener CANCEL_DIALOG = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick( DialogInterface dialog, int which ) {
+            dialog.cancel();
+        }
+    };
+
     @Override
     public void onClick( View v ) {
         if( v == prevbutton ) {
             //Avança 1 mes.
             calendar.add( Calendar.MONTH, -1 );
-            calendarGridView.setAdapter( new DateViewAdapter( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ) ) );
-            updateShowCurrentDate();
+            updateCalendar();
         } else if( v == nextbutton ) {
             //Retroce 1 mes.
             calendar.add( Calendar.MONTH, 1 );
-            calendarGridView.setAdapter( new DateViewAdapter( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ) ) );
-            updateShowCurrentDate();
+            updateCalendar();
+        } else if( v == monthtextview ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>( getContext(),
+                                                                           android.R.layout.simple_list_item_1,
+                                                                           getResources().getTextArray( R.array.months ) );
+            builder.setTitle( R.string.alert_dialog_month );
+            builder.setCancelable( true );
+            builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {
+                    calendar.set( Calendar.MONTH, which );
+                    updateCalendar();
+                    dialog.cancel();
+                }
+            } );
+            builder.setNegativeButton( R.string.words_cancel, CANCEL_DIALOG );
+
+            builder.create().show();
+        } else if( v == yeatextview ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+
+            builder.setTitle( R.string.alert_dialog_year );
+            builder.setCancelable( true );
+            final NumberPicker numberPicker = new NumberPicker( getContext() );
+            Calendar now = Calendar.getInstance();
+            numberPicker.setMinValue( now.get( Calendar.YEAR ) - 10 );
+            numberPicker.setMaxValue( now.get( Calendar.YEAR ) + 10 );
+            numberPicker.setValue( calendar.get( Calendar.YEAR ) );
+            builder.setView( numberPicker );
+            builder.setPositiveButton( R.string.words_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {
+                    calendar.set( Calendar.YEAR, numberPicker.getValue() );
+                    updateCalendar();
+                }
+            } );
+
+            builder.setNegativeButton( R.string.words_cancel, CANCEL_DIALOG );
+            builder.create().show();
         }
+    }
+
+    private void updateCalendar() {
+        calendarGridView.setAdapter( new DateViewAdapter( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ) ) );
+        updateShowCurrentDate();
     }
 
     private void updateShowCurrentDate() {
