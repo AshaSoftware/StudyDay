@@ -269,4 +269,38 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         return i;
     }
+
+    public void deleteMateria(Materia materia) {
+
+        // 1. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 2. delete
+        db.delete("materia", //table name
+                "cod_materia" + " = ?",  // selections
+                new String[]{String.valueOf(materia.getCodigo())}); //selections args
+
+        // 3. close
+        db.close();
+
+        //log
+        Log.d("deleteMateria", materia.toString());
+    }
+
+    public void deleteNaoEscolar(NaoEscolar naoescolar) {
+
+        // 1. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 2. delete
+        db.delete("nao_escolar", //table name
+                "cod_ne"+" = ?",  // selections
+                new String[] { String.valueOf(naoescolar.getCodigo()) }); //selections args
+
+        // 3. close
+        db.close();
+
+        //log
+        Log.d("deleteNaoEscolar", naoescolar.toString());
+    }
 }
