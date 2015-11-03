@@ -115,6 +115,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         //log
         Log.d( "getMateria(" + Codigo + ")", materia.toString() );
 
+        cursor.close();
         db.close();
 
         // 5. return book
@@ -151,6 +152,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         //log
         Log.d( "getNaoEscolar(" + Codigo + ")", naoescolar.toString() );
 
+        cursor.close();
         db.close();
 
         // 5. return book
@@ -168,7 +170,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery( query, null );
 
         // 3. go over each row, build book and add it to list
-        Materia materia = null;
+        Materia materia;
         if( cursor.moveToFirst() ) {
             do {
                 materia = new Materia();
@@ -186,6 +188,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Log.d( "getAllMaterias()", materias.toString() );
 
+        cursor.close();
         db.close();
 
         // return books
@@ -193,7 +196,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public List<NaoEscolar> getAllNaoEscolares() {
-        List<NaoEscolar> naoescolares = new LinkedList<NaoEscolar>();
+        List<NaoEscolar> naoescolares = new LinkedList<>();
 
         // 1. build the query
         String query = "SELECT  * FROM " + "nao_escolar";
@@ -203,11 +206,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery( query, null );
 
         // 3. go over each row, build book and add it to list
-        NaoEscolar naoescolar = null;
+        NaoEscolar naoescolar;
         if( cursor.moveToFirst() ) {
             do {
                 naoescolar = new NaoEscolar();
-                naoescolar.setCodigo( Integer.parseInt( cursor.getString( 0 ) ) );
+                naoescolar.setCodigo( cursor.getInt( 0 ) );
                 naoescolar.setNome( cursor.getString( 1 ) );
                 naoescolar.setDescricao( cursor.getString( 2 ) );
                 naoescolar.setDiaIni( cursor.getLong( 3 ) );
@@ -220,6 +223,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Log.d( "getAllNaoEscolares()", naoescolares.toString() );
 
+        cursor.close();
         db.close();
 
         // return books
