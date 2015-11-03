@@ -36,14 +36,4 @@
     <!-- Words -->
     <string name="words_ok">OK</string>
     <string name="words_cancel">Cancel</string>
-
-    <!-- Main Menu -->
-    <string name="menu_insert_materia">Insert Materia</string>
-    <string name="menu_delete_materia">Delete Materia</string>
-    <string name="menu_update_materia">Update Materia</string>
-    <string name="menu_find_materia">Find Materia</string>
-    <string name="menu_insert_ne">Insert Nao Escolar</string>
-    <string name="menu_delete_ne">Delete Nao Escolar</string>
-    <string name="menu_update_ne">Update Nao Escolar</string>
-    <string name="menu_find_ne">Find Nao Escolar</string>
 </resources>
