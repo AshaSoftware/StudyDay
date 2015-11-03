@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,6 +176,7 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
 
             super.setGravity( Gravity.CENTER );
             super.setText( String.valueOf( date.getDate() ) );
+            super.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
 
             //Define o estilo da borda.
             BORDER_STYLE.setColor( Color.LTGRAY );

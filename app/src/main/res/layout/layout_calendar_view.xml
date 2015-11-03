@@ -19,7 +19,8 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="0.357"
             android:gravity="center"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
+            android:textSize="14dp"/>
 
         <TextView
             android:id="@+id/year_value"
@@ -27,7 +28,8 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="0.357"
             android:gravity="center"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
+            android:textSize="14dp"/>
 
         <ImageView
             android:id="@+id/next_button"
