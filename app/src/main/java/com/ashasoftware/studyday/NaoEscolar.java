@@ -1,23 +1,38 @@
 package com.ashasoftware.studyday;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by natanmorais on 02/11/15.
+ * Modified by tiago on 03/11/15.
  */
 public class NaoEscolar {
+
     int Codigo;
     String Nome, Descricao;
-    int dia, diaFim, horaIni, horaFim;
+    Calendar diaIni, diaFim;
 
-    public NaoEscolar(){}
+    public NaoEscolar() {}
 
-    public NaoEscolar(int pCodigo, String pNome, String pDescricao, int pDia, int pDiaFim, int pHoraIni, int pHoraFim) {
+    public NaoEscolar( int pCodigo, String pNome, String pDescricao, long pInicio, long pFim ) {
         Codigo = pCodigo;
         Nome = pNome;
         Descricao = pDescricao;
-        dia = pDia;
-        diaFim = pDiaFim;
-        horaIni = pHoraIni;
-        horaFim = pHoraFim;
+        diaIni = GregorianCalendar.getInstance();
+        diaIni.setTimeInMillis( pInicio );
+        diaFim = GregorianCalendar.getInstance();
+        diaFim.setTimeInMillis( pFim );
+    }
+
+    public NaoEscolar( int pCodigo, String pNome, String pDescricao, long pInicio, int duration ) {
+        Codigo = pCodigo;
+        Nome = pNome;
+        Descricao = pDescricao;
+        diaIni = GregorianCalendar.getInstance();
+        diaIni.setTimeInMillis( pInicio );
+        diaFim = (Calendar) diaIni.clone();
+        diaFim.add( Calendar.MINUTE, duration );
     }
 
     public int getCodigo() {
@@ -32,47 +47,31 @@ public class NaoEscolar {
         return Descricao;
     }
 
-    public int getDia() {
-        return dia;
+    public Calendar getDiaIni() {
+        return diaIni;
     }
 
-    public int getDiaFim() {
+    public Calendar getDiaFim() {
         return diaFim;
     }
 
-    public int getHoraIni() {
-        return horaIni;
-    }
-
-    public int getHoraFim() {
-        return horaFim;
-    }
-
-    public void setCodigo(int codigo) {
+    public void setCodigo( int codigo ) {
         Codigo = codigo;
     }
 
-    public void setNome(String nome) {
+    public void setNome( String nome ) {
         Nome = nome;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao( String descricao ) {
         Descricao = descricao;
     }
 
-    public void setDia(int dia) {
-        this.dia = dia;
+    public void setDiaIni( long timestamp ) {
+        diaIni.setTimeInMillis( timestamp );
     }
 
-    public void setDiaFim(int diaFim) {
-        this.diaFim = diaFim;
-    }
-
-    public void setHoraIni(int horaIni) {
-        this.horaIni = horaIni;
-    }
-
-    public void setHoraFim(int horaFim) {
-        this.horaFim = horaFim;
+    public void setDiaFim( long timestamp ) {
+        diaFim.setTimeInMillis( timestamp );
     }
 }
