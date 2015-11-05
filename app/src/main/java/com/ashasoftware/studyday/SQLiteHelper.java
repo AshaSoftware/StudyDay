@@ -50,15 +50,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         //Sem Upgrade no momento.
     }
 
-    public void addMateria( Materia pMateria ) {
+    public void addMateria( String nome, String professor, int cor, int difProfessor, int difMateria ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put( "nome_materia", pMateria.getNome() );
-        values.put( "prof_materia", pMateria.getProfessor() );
-        values.put( "cor_materia", pMateria.getCor() );
-        values.put( "dif_prof", pMateria.getDifProfessor() );
-        values.put( "dif_materia", pMateria.getDifMateria() );
+        values.put( "nome_materia", nome );
+        values.put( "prof_materia", professor );
+        values.put( "cor_materia", cor );
+        values.put( "dif_prof", difProfessor );
+        values.put( "dif_materia", difMateria );
 
         db.insert( "materia", null, values );
 
@@ -100,13 +100,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // 4. build book object
-        Materia materia = new Materia();
+        Materia materia = new Materia( cursor.getString( 1 ),
+                                       cursor.getString( 2 ),
+                                       cursor.getInt( 3 ),
+                                       cursor.getInt( 4 ),
+                                       cursor.getInt( 5 ) );
         materia.setCodigo( cursor.getInt( 0 ) );
-        materia.setNome( cursor.getString( 1 ) );
-        materia.setProfessor( cursor.getString( 2 ) );
-        materia.setCor( cursor.getInt( 3 ) );
-        materia.setDifProfessor( cursor.getInt( 4 ) );
-        materia.setDifMateria( cursor.getInt( 5 ) );
 
         cursor.close();
         db.close();
@@ -163,14 +162,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Materia materia;
         if( cursor.moveToFirst() ) {
             do {
-                materia = new Materia();
+                materia = new Materia( cursor.getString( 1 ),
+                                       cursor.getString( 2 ),
+                                       cursor.getInt( 3 ),
+                                       cursor.getInt( 4 ),
+                                       cursor.getInt( 5 ) );
                 materia.setCodigo( cursor.getInt( 0 ) );
-                materia.setNome( cursor.getString( 1 ) );
-                materia.setProfessor( cursor.getString( 2 ) );
-                materia.setCor( cursor.getInt( 3 ) );
-                materia.setDifProfessor( cursor.getInt( 4 ) );
-                materia.setDifMateria( cursor.getInt( 5 ) );
-
                 // Add book to books
                 materias.add( materia );
             } while( cursor.moveToNext() );
