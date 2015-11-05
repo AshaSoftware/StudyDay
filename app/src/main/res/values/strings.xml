@@ -36,4 +36,9 @@
     <!-- Words -->
     <string name="words_ok">OK</string>
     <string name="words_cancel">Cancel</string>
+    <string name="words_subjects">Subjects</string>
+    <string name="words_teacher">Teacher</string>
+
+    <!-- Subject -->
+    <string name="show_subject">Show Subject</string>
 </resources>
