@@ -10,14 +10,21 @@ public class App extends Application {
 
     private static Context context;
 
+    private static SQLiteHelper database;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         context = getBaseContext();
+        database = new SQLiteHelper( context );
     }
 
     public static Context getContext() {
         return context;
+    }
+
+    public static SQLiteHelper getDatabase() {
+        return database;
     }
 }
