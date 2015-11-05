@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,8 +51,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addMateria( Materia pMateria ) {
-        Log.d( "addMateria", pMateria.toString() );
-
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -69,7 +66,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addNaoEscolar( NaoEscolar pNaoEscolar ) {
-        Log.d( "addNaoEscolar", pNaoEscolar.toString() );
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -112,9 +108,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         materia.setDifProfessor( cursor.getInt( 4 ) );
         materia.setDifMateria( cursor.getInt( 5 ) );
 
-        //log
-        Log.d( "getMateria(" + Codigo + ")", materia.toString() );
-
         cursor.close();
         db.close();
 
@@ -148,9 +141,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         naoescolar.setDescricao( cursor.getString( 2 ) );
         naoescolar.setDiaIni( cursor.getLong( 3 ) );
         naoescolar.setDiaFim( cursor.getLong( 4 ) );
-
-        //log
-        Log.d( "getNaoEscolar(" + Codigo + ")", naoescolar.toString() );
 
         cursor.close();
         db.close();
@@ -186,8 +176,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             } while( cursor.moveToNext() );
         }
 
-        Log.d( "getAllMaterias()", materias.toString() );
-
         cursor.close();
         db.close();
 
@@ -220,8 +208,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 naoescolares.add( naoescolar );
             } while( cursor.moveToNext() );
         }
-
-        Log.d( "getAllNaoEscolares()", naoescolares.toString() );
 
         cursor.close();
         db.close();
@@ -279,7 +265,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    public void deleteMateria( Materia materia ) {
+    public void deleteMateria( int codigo ) {
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
@@ -287,16 +273,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // 2. delete
         db.delete( "materia", //table name
                    "cod_materia" + " = ?",  // selections
-                   new String[]{ String.valueOf( materia.getCodigo() ) } ); //selections args
+                   new String[]{ String.valueOf( codigo ) } ); //selections args
 
         // 3. close
         db.close();
-
-        //log
-        Log.d( "deleteMateria", materia.toString() );
     }
 
-    public void deleteNaoEscolar( NaoEscolar naoescolar ) {
+    public void deleteNaoEscolar( int codigo ) {
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
@@ -304,12 +287,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // 2. delete
         db.delete( "nao_escolar", //table name
                    "cod_ne" + " = ?",  // selections
-                   new String[]{ String.valueOf( naoescolar.getCodigo() ) } ); //selections args
+                   new String[]{ String.valueOf( codigo ) } ); //selections args
 
         // 3. close
         db.close();
-
-        //log
-        Log.d( "deleteNaoEscolar", naoescolar.toString() );
     }
 }
