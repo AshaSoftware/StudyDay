@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -118,7 +119,6 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                 SubjectView sv = new SubjectView();
                 sv.setMateria( m );
                 sv.setOnCommandListener( SubjectViewActivity.this );
-                sv.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, 200 ) );
                 return sv;
             }
 
