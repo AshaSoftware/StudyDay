@@ -118,7 +118,7 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                 SubjectView sv = new SubjectView();
                 sv.setMateria( m );
                 sv.setOnCommandListener( SubjectViewActivity.this );
-                sv.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, 150 ) );
+                sv.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, 200 ) );
                 return sv;
             }
 

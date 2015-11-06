@@ -10,6 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
+        android:divider="#FFF"
+        android:dividerHeight="0dp"
         android:paddingBottom="60dp"/>
 
     <android.support.design.widget.FloatingActionButton
