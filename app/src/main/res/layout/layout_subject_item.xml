@@ -4,13 +4,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingBottom="0dp"
-                android:paddingLeft="0dp"
-                android:paddingRight="1dp"
-                android:paddingTop="0dp">
+                android:paddingLeft="5dp"
+                android:paddingRight="0dp"
+                android:paddingTop="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/subject_item_shadow"
         android:orientation="horizontal">
 
         <View
