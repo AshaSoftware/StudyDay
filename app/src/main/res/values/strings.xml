@@ -46,6 +46,8 @@
     <string name="words_successful">Successful</string>
     <string name="words_yes">Yes</string>
     <string name="words_no">No</string>
+    <string name="words_subject_hardness">Subject hardness</string>
+    <string name="words_teacher_hardness">Teacher hardness</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>

@@ -66,8 +66,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="New Text"
-                android:textColor="#2f755b"/>
+                android:textColor="#2f755b"
+                android:text="@string/words_teacher_hardness"/>
 
             <SeekBar
                 android:id="@+id/prof_level"
@@ -102,7 +102,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="New Text"
+                android:text="@string/words_subject_hardness"
                 android:textColor="#2f755b"/>
 
             <SeekBar
