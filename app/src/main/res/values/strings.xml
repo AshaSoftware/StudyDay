@@ -38,6 +38,14 @@
     <string name="words_cancel">Cancel</string>
     <string name="words_subjects">Subjects</string>
     <string name="words_teacher">Teacher</string>
+    <string name="words_name">Name</string>
+    <string name="words_teacher_name">Teacher Name</string>
+    <string name="words_add_subject">Add Subject</string>
+    <string name="words_edit_subject">Edit Subject</string>
+    <string name="words_invalid_field">Invalid field</string>
+    <string name="words_successful">Successful</string>
+    <string name="words_yes">Yes</string>
+    <string name="words_no">No</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>

@@ -16,7 +16,7 @@
         <View
             android:id="@+id/subject_color_indicator"
             android:layout_width="5dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             />
 
         <LinearLayout
