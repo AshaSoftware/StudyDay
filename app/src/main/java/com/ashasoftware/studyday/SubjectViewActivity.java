@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Random;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
  * Created by tiago on 05/11/15.
@@ -122,13 +126,15 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
         }
     }
 
-    public class AddOrEditSubjectDialog implements SeekBar.OnSeekBarChangeListener {
+    public class AddOrEditSubjectDialog implements SeekBar.OnSeekBarChangeListener, AmbilWarnaDialog.OnAmbilWarnaListener {
 
         private final AlertDialog.Builder builder;
         private final EditText name, teacher;
         private final SeekBar subjectLevel, teacherLevel;
         private final TextView subjectLevelValue, teacherLevelValue;
+        private final View subjectColorValue;
         private final Materia materia;
+        private int subjectColor;
 
         public AddOrEditSubjectDialog( Context context, Materia materia ) {
             this.materia = materia;
@@ -145,6 +151,13 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
             View v = li.inflate( R.layout.layout_add_subject_dialog, null );
             builder.setView( v );
 
+            //Gera um cor aleatório toda vez que a janela aparecer.
+            Random rand = new Random();
+            subjectColor = Color.argb( 255,
+                                       rand.nextInt( 256 ),
+                                       rand.nextInt( 256 ),
+                                       rand.nextInt( 256 ) );
+
             //Obtem os controles da janela.
             name = (EditText) v.findViewById( R.id.subject_name );
             teacher = (EditText) v.findViewById( R.id.prof_name );
@@ -152,8 +165,15 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
             teacherLevel = (SeekBar) v.findViewById( R.id.prof_level );
             subjectLevelValue = (TextView) v.findViewById( R.id.subject_level_value );
             teacherLevelValue = (TextView) v.findViewById( R.id.prof_level_value );
+            subjectColorValue = v.findViewById( R.id.subject_color_value );
             subjectLevel.setOnSeekBarChangeListener( this );
             teacherLevel.setOnSeekBarChangeListener( this );
+            subjectColorValue.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick( View v ) {
+                    new AmbilWarnaDialog( SubjectViewActivity.this, subjectColor, false, AddOrEditSubjectDialog.this ).show();
+                }
+            } );
 
             //Está no modo edição. Preenche os campos.
             if( materia != null ) {
@@ -161,7 +181,10 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                 teacher.setText( materia.getProfessor() );
                 subjectLevel.setProgress( materia.getDifMateria() );
                 teacherLevel.setProgress( materia.getDifProfessor() );
+                subjectColor = materia.getCor();
             }
+
+            ((GradientDrawable) subjectColorValue.getBackground()).setColor( subjectColor );
         }
 
         //Evento chamando quando o usuário clicar no botao OK.
@@ -182,7 +205,7 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                 if( materia == null ) {
                     App.getDatabase().addMateria( name.getText().toString(),
                                                   teacher.getText().toString(),
-                                                  Color.GREEN,
+                                                  subjectColor,
                                                   teacherLevel.getProgress(),
                                                   subjectLevel.getProgress() );
                 } //Modo edição. Edita a máteria e atualiza no banco de dados.
@@ -191,7 +214,7 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                     materia.setProfessor( teacher.getText().toString() );
                     materia.setDifMateria( subjectLevel.getProgress() );
                     materia.setDifProfessor( teacherLevel.getProgress() );
-                    materia.setCor( Color.GREEN );
+                    materia.setCor( subjectColor );
                     App.getDatabase().updateMateria( materia );
                 }
 
@@ -222,6 +245,16 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
         @Override
         public void onStopTrackingTouch( SeekBar seekBar ) {
 
+        }
+
+        @Override
+        public void onCancel( AmbilWarnaDialog dialog ) {
+        }
+
+        @Override
+        public void onOk( AmbilWarnaDialog dialog, int color ) {
+            subjectColor = color;
+            ((GradientDrawable) subjectColorValue.getBackground()).setColor( subjectColor );
         }
     }
 }

@@ -48,6 +48,7 @@
     <string name="words_no">No</string>
     <string name="words_subject_hardness">Subject hardness</string>
     <string name="words_teacher_hardness">Teacher hardness</string>
+    <string name="words_subject_color">Subject color</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>
