@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,32 +65,36 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="20dp"
-                android:layout_row="2">
+                android:layout_row="2"
+                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="@string/words_teacher_hardness"
-                    android:textColor="#2f755b"/>
-
-                <SeekBar
-                    android:id="@+id/prof_level"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:max="10"
-                    android:progress="5"/>
-
-                <TextView
-                    android:id="@+id/prof_level_value"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.1"
-                    android:text="5"
-                    android:textColor="#2f755b"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/words_teacher_hardness"
+                        android:textColor="#2f755b"/>
+
+                    <RatingBar
+                        android:id="@+id/subject_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:isIndicator="false"
+                        android:progressTint="#ffd500"
+                        android:rating="5"
+                        android:stepSize="0.5"
+                        android:layout_gravity="center_horizontal"
+                        android:progressBackgroundTint="#2f755b"/>
+
+                </LinearLayout>
+
             </TableRow>
 
             <TableRow
@@ -100,32 +105,35 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="20dp"
-                android:layout_row="3">
+                android:layout_row="3"
+                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:text="@string/words_subject_hardness"
-                    android:textColor="#2f755b"/>
-
-                <SeekBar
-                    android:id="@+id/subject_level"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:max="10"
-                    android:progress="5"/>
-
-                <TextView
-                    android:id="@+id/subject_level_value"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.1"
-                    android:text="5"
-                    android:textColor="#2f755b"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/words_subject_hardness"
+                        android:textColor="#2f755b"/>
+
+                    <RatingBar
+                        android:id="@+id/prof_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:isIndicator="false"
+                        android:progressTint="#ffd500"
+                        android:rating="5"
+                        android:stepSize="0.5"
+                        android:layout_gravity="center_horizontal"
+                        android:progressBackgroundTint="#2f755b"/>
+                </LinearLayout>
+
             </TableRow>
 
             <TableRow
