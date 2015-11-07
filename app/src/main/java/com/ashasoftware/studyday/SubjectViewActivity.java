@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -124,12 +123,11 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
         }
     }
 
-    public class AddOrEditSubjectDialog implements SeekBar.OnSeekBarChangeListener, AmbilWarnaDialog.OnAmbilWarnaListener {
+    public class AddOrEditSubjectDialog implements RatingBar.OnRatingBarChangeListener, AmbilWarnaDialog.OnAmbilWarnaListener {
 
         private final AlertDialog.Builder builder;
         private final EditText name, teacher;
-        private final SeekBar subjectLevel, teacherLevel;
-        private final TextView subjectLevelValue, teacherLevelValue;
+        private final RatingBar subjectLevel, teacherLevel;
         private final View subjectColorValue;
         private final Materia materia;
         private int subjectColor;
@@ -159,13 +157,11 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
             //Obtem os controles da janela.
             name = (EditText) v.findViewById( R.id.subject_name );
             teacher = (EditText) v.findViewById( R.id.prof_name );
-            subjectLevel = (SeekBar) v.findViewById( R.id.subject_level );
-            teacherLevel = (SeekBar) v.findViewById( R.id.prof_level );
-            subjectLevelValue = (TextView) v.findViewById( R.id.subject_level_value );
-            teacherLevelValue = (TextView) v.findViewById( R.id.prof_level_value );
+            subjectLevel = (RatingBar) v.findViewById( R.id.subject_level );
+            teacherLevel = (RatingBar) v.findViewById( R.id.prof_level );
             subjectColorValue = v.findViewById( R.id.subject_color_value );
-            subjectLevel.setOnSeekBarChangeListener( this );
-            teacherLevel.setOnSeekBarChangeListener( this );
+            subjectLevel.setOnRatingBarChangeListener( this );
+            teacherLevel.setOnRatingBarChangeListener( this );
             subjectColorValue.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View v ) {
@@ -177,8 +173,8 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
             if( materia != null ) {
                 name.setText( materia.getNome() );
                 teacher.setText( materia.getProfessor() );
-                subjectLevel.setProgress( materia.getDifMateria() );
-                teacherLevel.setProgress( materia.getDifProfessor() );
+                subjectLevel.setRating( materia.getDifMateria() / 2f );
+                teacherLevel.setRating( materia.getDifProfessor() / 2f );
                 subjectColor = materia.getCor();
             }
 
@@ -204,14 +200,14 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
                     App.getDatabase().addMateria( name.getText().toString(),
                                                   teacher.getText().toString(),
                                                   subjectColor,
-                                                  teacherLevel.getProgress(),
-                                                  subjectLevel.getProgress() );
+                                                  (int) (teacherLevel.getRating() * 2),
+                                                  (int) (subjectLevel.getRating() * 2) );
                 } //Modo edição. Edita a máteria e atualiza no banco de dados.
                 else {
                     materia.setNome( name.getText().toString() );
                     materia.setProfessor( teacher.getText().toString() );
-                    materia.setDifMateria( subjectLevel.getProgress() );
-                    materia.setDifProfessor( teacherLevel.getProgress() );
+                    materia.setDifMateria( (int) (subjectLevel.getRating() * 2) );
+                    materia.setDifProfessor( (int) (teacherLevel.getRating() * 2) );
                     materia.setCor( subjectColor );
                     App.getDatabase().updateMateria( materia );
                 }
@@ -227,22 +223,7 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
         }
 
         @Override
-        public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {
-            if( seekBar == subjectLevel ) {
-                subjectLevelValue.setText( String.valueOf( progress ) );
-            } else if( seekBar == teacherLevel ) {
-                teacherLevelValue.setText( String.valueOf( progress ) );
-            }
-        }
-
-        @Override
-        public void onStartTrackingTouch( SeekBar seekBar ) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch( SeekBar seekBar ) {
-
+        public void onRatingChanged( RatingBar ratingBar, float rating, boolean fromUser ) {
         }
 
         @Override
