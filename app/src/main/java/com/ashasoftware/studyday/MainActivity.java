@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent( this, SubjectViewActivity.class );
                 startActivity( i );
                 return true;
+            case R.id.show_naoescolar:
+                Intent j = new Intent( this, NaoEscolarViewActivity.class );
+                startActivity( j );
+                return true;
         }
 
         return super.onOptionsItemSelected( item );

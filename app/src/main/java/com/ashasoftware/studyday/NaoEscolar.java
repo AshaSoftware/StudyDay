@@ -1,7 +1,5 @@
 package com.ashasoftware.studyday;
 
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -15,31 +13,13 @@ public class NaoEscolar {
     String Nome, Descricao;
     Calendar diaIni, diaFim;
 
-    public NaoEscolar() {
-        Nome = "Unknown";
-        Descricao = "Unknown";
-        diaIni = GregorianCalendar.getInstance();
-        diaFim = GregorianCalendar.getInstance();
-    }
-
-    public NaoEscolar( int pCodigo, String pNome, String pDescricao, long pInicio, long pFim ) {
-        Codigo = pCodigo;
+    public NaoEscolar( String pNome, String pDescricao, long pInicio, long pFim ) {
         Nome = pNome;
         Descricao = pDescricao;
         diaIni = GregorianCalendar.getInstance();
         diaIni.setTimeInMillis( pInicio );
         diaFim = GregorianCalendar.getInstance();
         diaFim.setTimeInMillis( pFim );
-    }
-
-    public NaoEscolar( int pCodigo, String pNome, String pDescricao, long pInicio, int duration ) {
-        Codigo = pCodigo;
-        Nome = pNome;
-        Descricao = pDescricao;
-        diaIni = GregorianCalendar.getInstance();
-        diaIni.setTimeInMillis( pInicio );
-        diaFim = (Calendar) diaIni.clone();
-        diaFim.add( Calendar.MINUTE, duration );
     }
 
     public int getCodigo() {
@@ -75,7 +55,6 @@ public class NaoEscolar {
     }
 
     public void setDiaIni( long timestamp ) {
-        Log.i( "NULL", String.valueOf( diaIni == null ) );
         diaIni.setTimeInMillis( timestamp );
     }
 
