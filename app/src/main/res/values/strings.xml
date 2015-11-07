@@ -28,6 +28,9 @@
 
     <!-- DatePatters -->
     <string name="year_pattern">yyyy</string>
+    <string name="date_pattern">MM/dd/yyyy</string>
+    <string name="short_time_pattern">HH:mm</string>
+    <string name="full_time_pattern">HH:mm:ss</string>
 
     <!-- Dialogs -->
     <string name="alert_dialog_month">Select the month:</string>
@@ -49,7 +52,17 @@
     <string name="words_subject_hardness">Subject hardness</string>
     <string name="words_teacher_hardness">Teacher hardness</string>
     <string name="words_subject_color">Subject color</string>
+    <string name="words_add_naoescolar">Add Non-School Task</string>
+    <string name="words_edit_naoescolar">Edit Non-School Task</string>
+    <string name="words_title">Title</string>
+    <string name="words_description">Description</string>
+    <string name="words_start">Start</string>
+    <string name="words_end">End</string>
+    <string name="words_non_school">Non-School</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>
+
+    <!-- Non-School -->
+    <string name="show_naoescolar">Show Non-School Task</string>
 </resources>

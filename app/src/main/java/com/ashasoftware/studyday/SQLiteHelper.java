@@ -65,15 +65,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addNaoEscolar( NaoEscolar pNaoEscolar ) {
+    public void addNaoEscolar( String nome, String descricao, long inicio, long fim ) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put( "nome_ne", pNaoEscolar.getNome() );
-        values.put( "descricao_ne", pNaoEscolar.getDescricao() );
-        values.put( "dia_ini_ne", pNaoEscolar.getDiaIni().getTimeInMillis() );
-        values.put( "dia_fim_ne", pNaoEscolar.getDiaFim().getTimeInMillis() );
+        values.put( "nome_ne", nome );
+        values.put( "descricao_ne", descricao );
+        values.put( "dia_ini_ne", inicio );
+        values.put( "dia_fim_ne", fim );
 
         db.insert( "nao_escolar", null, values );
 
@@ -134,12 +134,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // 4. build book object
-        NaoEscolar naoescolar = new NaoEscolar();
+        NaoEscolar naoescolar = new NaoEscolar( cursor.getString( 1 ),
+                                                cursor.getString( 2 ),
+                                                cursor.getLong( 3 ),
+                                                cursor.getLong( 4 ) );
         naoescolar.setCodigo( cursor.getInt( 0 ) );
-        naoescolar.setNome( cursor.getString( 1 ) );
-        naoescolar.setDescricao( cursor.getString( 2 ) );
-        naoescolar.setDiaIni( cursor.getLong( 3 ) );
-        naoescolar.setDiaFim( cursor.getLong( 4 ) );
 
         cursor.close();
         db.close();
@@ -194,12 +193,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         NaoEscolar naoescolar;
         if( cursor.moveToFirst() ) {
             do {
-                naoescolar = new NaoEscolar();
+                naoescolar = new NaoEscolar( cursor.getString( 1 ),
+                                             cursor.getString( 2 ),
+                                             cursor.getLong( 3 ),
+                                             cursor.getLong( 4 ) );
                 naoescolar.setCodigo( cursor.getInt( 0 ) );
-                naoescolar.setNome( cursor.getString( 1 ) );
-                naoescolar.setDescricao( cursor.getString( 2 ) );
-                naoescolar.setDiaIni( cursor.getLong( 3 ) );
-                naoescolar.setDiaFim( cursor.getLong( 4 ) );
 
                 // Add book to books
                 naoescolares.add( naoescolar );

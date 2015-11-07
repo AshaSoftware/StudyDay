@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="task_not_started">#FF0000</color>
+    <color name="task_in_progress">#006e00</color>
+    <color name="task_completed">#0e0ea9</color>
 </resources>
