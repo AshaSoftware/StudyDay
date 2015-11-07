@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/drawer_item_subject"
+            android:icon="@drawable/books"
+            android:title="@string/words_subjects"/>
+        <item
+            android:id="@+id/drawer_item_non_school"
+            android:icon="@drawable/run"
+            android:title="@string/words_non_school"/>
+    </group>
+</menu>
