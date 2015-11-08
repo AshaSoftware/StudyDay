@@ -10,10 +10,12 @@ public class Aula {
     int Codigo, CodigoMateria;
     Calendar diaIni, diaFim;
 
-    public Aula(int codigoMateria, long pIni, long pFim) {
+    public Aula( int codigoMateria, long pIni, long pFim ) {
         CodigoMateria = codigoMateria;
-        setDiaIni(pIni);
-        setDiaFim(pFim);
+        diaIni = Calendar.getInstance();
+        setDiaIni( pIni );
+        diaFim = Calendar.getInstance();
+        setDiaFim( pFim );
     }
 
     public int getCodigo() {
@@ -40,11 +42,11 @@ public class Aula {
         diaFim.setTimeInMillis( timestamp );
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo( int codigo ) {
         Codigo = codigo;
     }
 
-    public void setCodigoMateria(int codigoMateria) {
+    public void setCodigoMateria( int codigoMateria ) {
         CodigoMateria = codigoMateria;
     }
 }

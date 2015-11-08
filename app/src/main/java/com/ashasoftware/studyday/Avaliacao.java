@@ -9,7 +9,7 @@ public class Avaliacao {
     String Nome, Descricao;
     int Nota, Peso;
 
-    public Avaliacao(int codigoMateria, String nome, String descricao, int nota, int peso) {
+    public Avaliacao( int codigoMateria, String nome, String descricao, int nota, int peso ) {
         CodigoMateria = codigoMateria;
         Nome = nome;
         Descricao = descricao;
@@ -41,27 +41,27 @@ public class Avaliacao {
         return Peso;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo( int codigo ) {
         Codigo = codigo;
     }
 
-    public void setCodigoMateria(int codigoMateria) {
+    public void setCodigoMateria( int codigoMateria ) {
         CodigoMateria = codigoMateria;
     }
 
-    public void setNome(String nome) {
+    public void setNome( String nome ) {
         Nome = nome;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao( String descricao ) {
         Descricao = descricao;
     }
 
-    public void setNota(int nota) {
+    public void setNota( int nota ) {
         Nota = nota;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso( int peso ) {
         Peso = peso;
     }
 }
