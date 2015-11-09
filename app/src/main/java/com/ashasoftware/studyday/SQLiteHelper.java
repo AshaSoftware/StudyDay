@@ -41,14 +41,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                                         "descricao_aval TEXT, " +
                                         "nota_aval INTEGER NOT NULL, " +
                                         "peso_aval INTEGER NOT NULL " +
-                                        "FOREIGN KEY(`cod_materia`) REFERENCES cod_materia)";
+                                        "FOREIGN KEY materia(`cod_materia`) REFERENCES cod_materia)";
 
         String CREATE_AULA_TABLE = "CREATE TABLE aula (" +
                                    "cod_aula INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                                    "cod_materia INTEGER NOT NULL," +
                                    "dia_ini_aula INTEGER NOT NULL," +
                                    "dia_fim_aula INTEGER NOT NULL," +
-                                   "FOREIGN KEY(`cod_materia`) REFERENCES cod_materia )";
+                                   "FOREIGN KEY materia(`cod_materia`) REFERENCES cod_materia )";
 
         String CREATE_NAOESCOLAR_TABLE = "CREATE TABLE nao_escolar ( " +
                                          "cod_ne INTEGER PRIMARY KEY AUTOINCREMENT, " +
