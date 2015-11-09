@@ -1,9 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/show_subject"
-        android:title="@string/show_subject"/>
-    <item
-        android:id="@+id/show_naoescolar"
-        android:title="@string/show_naoescolar"/>
+<menu>
 </menu>
