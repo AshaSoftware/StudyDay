@@ -7,11 +7,34 @@ import java.util.Calendar;
  */
 public class Aula {
 
-    int Codigo, CodigoMateria;
+    int Codigo;
     Calendar diaIni, diaFim;
+    Materia materia;
 
-    public Aula( int codigoMateria, long pIni, long pFim ) {
-        CodigoMateria = codigoMateria;
+    public Aula( Materia materia, long pIni, long pFim ) throws Exception {
+        if( materia == null ) {
+            throw new Exception();
+        }
+
+        this.materia = materia;
+        diaIni = Calendar.getInstance();
+        setDiaIni( pIni );
+        diaFim = Calendar.getInstance();
+        setDiaFim( pFim );
+    }
+
+    public Aula( int codigoMateria, long pIni, long pFim ) throws Exception {
+        for( Materia m : App.getDatabase().getAllMaterias() ) {
+            if( m.getCodigo() == codigoMateria ) {
+                this.materia = m;
+                break;
+            }
+        }
+
+        if( this.materia == null ) {
+            throw new Exception();
+        }
+
         diaIni = Calendar.getInstance();
         setDiaIni( pIni );
         diaFim = Calendar.getInstance();
@@ -22,8 +45,8 @@ public class Aula {
         return Codigo;
     }
 
-    public int getCodigoMateria() {
-        return CodigoMateria;
+    public Materia getMateria() {
+        return this.materia;
     }
 
     public Calendar getDiaIni() {
@@ -46,7 +69,7 @@ public class Aula {
         Codigo = codigo;
     }
 
-    public void setCodigoMateria( int codigoMateria ) {
-        CodigoMateria = codigoMateria;
+    public void setMateria( Materia materia ) {
+        this.materia = materia;
     }
 }

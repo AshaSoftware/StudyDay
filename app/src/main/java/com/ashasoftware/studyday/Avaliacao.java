@@ -5,12 +5,36 @@ package com.ashasoftware.studyday;
  */
 public class Avaliacao {
 
-    int Codigo, CodigoMateria;
+    int Codigo;
     String Nome, Descricao;
     int Nota, Peso;
+    Materia materia;
 
-    public Avaliacao( int codigoMateria, String nome, String descricao, int nota, int peso ) {
-        CodigoMateria = codigoMateria;
+    public Avaliacao( int codigoMateria, String nome, String descricao, int nota, int peso ) throws Exception {
+
+        for( Materia m : App.getDatabase().getAllMaterias() ) {
+            if( m.getCodigo() == codigoMateria ) {
+                this.materia = m;
+                break;
+            }
+        }
+
+        if( this.materia == null ) {
+            throw new Exception();
+        }
+
+        Nome = nome;
+        Descricao = descricao;
+        Nota = nota;
+        Peso = peso;
+    }
+
+    public Avaliacao( Materia materia, String nome, String descricao, int nota, int peso ) throws Exception {
+        if( materia == null ) {
+            throw new Exception();
+        }
+
+        this.materia = materia;
         Nome = nome;
         Descricao = descricao;
         Nota = nota;
@@ -21,8 +45,8 @@ public class Avaliacao {
         return Codigo;
     }
 
-    public int getCodigoMateria() {
-        return CodigoMateria;
+    public Materia getMateria() {
+        return materia;
     }
 
     public String getNome() {
@@ -45,8 +69,8 @@ public class Avaliacao {
         Codigo = codigo;
     }
 
-    public void setCodigoMateria( int codigoMateria ) {
-        CodigoMateria = codigoMateria;
+    public void setMateria( Materia materia ) {
+        this.materia = materia;
     }
 
     public void setNome( String nome ) {

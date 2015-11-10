@@ -9,75 +9,86 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by tiago on 06/11/15.
+ * Created by tiago on 09/11/15.
  */
-public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEscolarView.OnCommandListener {
+public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCommandListener {
 
-    private ListView list;
+    private ExpandableListView list;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
 
         //Define o layout.
-        setContentView( R.layout.layout_naoescolar_view_activity );
+        setContentView( R.layout.layout_aula_view_activity );
 
         //Recupera a barra de ação.
         ActionBar actionBar = getSupportActionBar();
         if( actionBar != null ) {
-            actionBar.setTitle( R.string.words_non_school );
+            actionBar.setTitle( R.string.words_class );
         }
 
         //Define o evento de clique para o botao flutuante.
         findViewById( R.id.fab ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v ) {
-                new AddOrEditNaoEscolarDialog( NaoEscolarViewActivity.this, null ).show();
+                new AddOrEditAulaDialog( AulaViewActivity.this, null ).show();
             }
         } );
 
         //Recupera o controle do ListView.
-        list = (ListView) findViewById( R.id.naoescolar_view_list );
+        list = (ExpandableListView) findViewById( R.id.aula_view_list );
 
-        //Carrega a lista de atividades não-escolares.
+        //Carrega a lista de aulas.
         update();
     }
 
     private void update() {
-        //Carrega a lista de atividades não-escolares e a exibe.
-        list.setAdapter( new SubjectViewAdapter( App.getDatabase().getAllNaoEscolares() ) );
+        //Carrega a lista de aulas e a exibe.
+        HashMap<Integer, List<Aula>> aulas = new HashMap<>();
+
+        for( Aula aula : App.getDatabase().getAllAulas() ) {
+            int week = aula.getDiaIni().get( Calendar.DAY_OF_WEEK ) - 1;
+            if( !aulas.containsKey( week ) ) aulas.put( week, new ArrayList<Aula>() );
+            aulas.get( week ).add( aula );
+        }
+
+        list.setAdapter( new AulaViewAdapter( aulas ) );
     }
 
     @Override
-    public void onEdit( View v, NaoEscolar ne ) {
-        new AddOrEditNaoEscolarDialog( this, ne ).show();
+    public void onEdit( View v, Aula aula ) {
+        new AddOrEditAulaDialog( this, aula ).show();
     }
 
     @Override
-    public void onDelete( View v, final NaoEscolar ne ) {
+    public void onDelete( View v, final Aula aula ) {
         //Cria o construtor da janela de dialogo.
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
         //Define o titulo e os botoes.
-        builder.setTitle( "Delete: " + ne.getNome() );
+        builder.setTitle( "Delete: " + aula.getMateria().getNome() );
         builder.setNegativeButton( R.string.words_no, null );
         builder.setPositiveButton( R.string.words_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
-                App.getDatabase().deleteNaoEscolar( ne.getCodigo() );
+                App.getDatabase().deleteAula( aula.getCodigo() );
                 update();
             }
         } );
@@ -86,59 +97,103 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
     }
 
     @Override
-    public void onClick( View v, NaoEscolar ne ) {
+    public void onClick( View v, Aula aula ) {
 
     }
 
-    //"Converte" cada atividade não-escolar em uma view.
-    private class SubjectViewAdapter extends BaseAdapter {
+    //"Converte" cada aula em uma view.
+    private class AulaViewAdapter extends BaseExpandableListAdapter {
 
-        private List<NaoEscolar> naoEscolares;
+        private HashMap<Integer, List<Aula>> aulas;
+        private String[] weeks;
 
-        public SubjectViewAdapter( List<NaoEscolar> naoEscolares ) {
-            this.naoEscolares = naoEscolares;
+        public AulaViewAdapter( HashMap<Integer, List<Aula>> aulas ) {
+            this.aulas = aulas;
+            weeks = App.getContext().getResources().getStringArray( R.array.weeks );
         }
 
         @Override
-        public int getCount() {
-            return naoEscolares.size();
+        public int getGroupCount() {
+            return weeks.length;
         }
 
         @Override
-        public Object getItem( int position ) {
-            return null;
+        public int getChildrenCount( int groupPosition ) {
+            return aulas.containsKey( groupPosition ) ?
+                    aulas.get( groupPosition ).size() :
+                    0;
         }
 
         @Override
-        public long getItemId( int position ) {
-            return position;
+        public Object getGroup( int groupPosition ) {
+            return weeks[groupPosition];
         }
 
         @Override
-        public View getView( int position, View convertView, ViewGroup parent ) {
-            NaoEscolar ne = naoEscolares.get( position );
+        public Object getChild( int groupPosition, int childPosition ) {
+            return aulas.get( groupPosition ).get( childPosition );
+        }
 
+        @Override
+        public long getGroupId( int groupPosition ) {
+            return 0;
+        }
+
+        @Override
+        public long getChildId( int groupPosition, int childPosition ) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getGroupView( int gp, boolean isExpanded, View convertView, ViewGroup parent ) {
             if( convertView == null ) {
-                NaoEscolarView nev = new NaoEscolarView();
-                nev.setNaoEscolar( ne );
-                nev.setOnCommandListener( NaoEscolarViewActivity.this );
-                return nev;
+                View v = getLayoutInflater().inflate( R.layout.layout_aula_list_group, null );
+                ((TextView) v.findViewById( R.id.aula_list_group_header )).setText( weeks[gp].toUpperCase() );
+                list.expandGroup( gp );
+                return v;
             }
 
             return convertView;
         }
+
+        @Override
+        public View getChildView( int gp, int cp, boolean isLastChild, View convertView, ViewGroup parent ) {
+            AulaView av;
+            if( convertView == null ) {
+                av = new AulaView();
+                av.setOnCommandListener( AulaViewActivity.this );
+            } else {
+                av = (AulaView) convertView;
+            }
+
+            av.setAula( aulas.get( gp ).get( cp ) );
+
+            return av;
+        }
+
+        @Override
+        public boolean isChildSelectable( int groupPosition, int childPosition ) {
+            return true;
+        }
     }
 
-    public class AddOrEditNaoEscolarDialog {
+    public class AddOrEditAulaDialog {
 
-        private final NaoEscolar naoEscolar;
+        private final Aula aula;
         private final AlertDialog.Builder builder;
-        private final EditText title, description;
         private final TextView startStatus, endStatus;
+        private Spinner spinner;
         private Calendar start, end;
+        private final HashMap<String, Materia> subjects;
 
-        public AddOrEditNaoEscolarDialog( Context context, NaoEscolar naoEscolar ) {
-            this.naoEscolar = naoEscolar;
+        public AddOrEditAulaDialog( Context context, Aula aula ) {
+
+            this.aula = aula;
 
             //Cria o construtor da janela de dialogo.
             builder = new AlertDialog.Builder( context );
@@ -147,26 +202,35 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
             builder.setPositiveButton( R.string.words_ok, ok );
 
             //Define o titulo da janela.
-            builder.setTitle( naoEscolar == null ? R.string.words_add_naoescolar : R.string.words_edit_naoescolar );
+            builder.setTitle( aula == null ? R.string.words_add_class : R.string.words_edit_class );
             //Infla o conteudo da janela e adiciona-o.
             LayoutInflater li = (LayoutInflater) App.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            View v = li.inflate( R.layout.layout_add_naoescolar_dialog, null );
+            View v = li.inflate( R.layout.layout_add_aula_dialog, null );
             builder.setView( v );
 
             //Obtem os controles da janela.
-            title = (EditText) v.findViewById( R.id.naoescolar_title );
-            description = (EditText) v.findViewById( R.id.naoescolar_desc );
             startStatus = (TextView) v.findViewById( R.id.start_datetime_status );
             endStatus = (TextView) v.findViewById( R.id.end_datetime_status );
+            spinner = (Spinner) v.findViewById( R.id.aula_subjects );
+
+            subjects = new HashMap<>();
+            List<String> adapterValue = new ArrayList<>();
+            for( Materia materia : App.getDatabase().getAllMaterias() ) {
+                subjects.put( materia.getNome(), materia );
+                adapterValue.add( materia.getNome() );
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>( context, android.R.layout.simple_list_item_1, adapterValue );
+            adapter.setDropDownViewResource( R.layout.spinner_item_black_white );
+            spinner.setAdapter( adapter );
 
             //Modo edição. Preenche os campos.
-            if( naoEscolar != null ) {
-                title.setText( naoEscolar.getNome() );
-                description.setText( naoEscolar.getDescricao() );
-                start = (Calendar) naoEscolar.getDiaIni().clone();
-                end = (Calendar) naoEscolar.getDiaFim().clone();
+            if( aula != null ) {
+                start = (Calendar) aula.getDiaIni().clone();
+                end = (Calendar) aula.getDiaFim().clone();
                 //Escreve o texto nos TextViews.
                 setDateTime( start, end );
+                spinner.setSelection( adapterValue.indexOf( aula.getMateria().getNome() ) );
             } //Modo adição.
             else {
                 //Recupera a data e hora atual.
@@ -217,6 +281,13 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
 
         //Exibe a janela de diálogo.
         public void show() {
+            if( App.getDatabase().getAllMaterias().size() == 0 ) {
+                Toast.makeText( getBaseContext(),
+                                getBaseContext().getResources().getString( R.string.words_add_a_new_subject ),
+                                Toast.LENGTH_SHORT ).show();
+                return;
+            }
+
             builder.show();
         }
 
@@ -224,14 +295,6 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
         private final DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
-
-                //O titulo da atividade não-escolar é requerida.
-                if( title.getText().length() == 0 ) {
-                    Toast.makeText( App.getContext(),
-                                    App.getContext().getResources().getText( R.string.words_invalid_field ),
-                                    Toast.LENGTH_SHORT ).show();
-                    return;
-                }
 
                 //O tempo inicial tem que ser menor que o tempo final.
                 if( start.getTimeInMillis() >= end.getTimeInMillis() ) {
@@ -241,22 +304,20 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
                     return;
                 }
 
-                //Modo adição. Adiciona a atividade não-escolar ao banco de dados.
-                if( naoEscolar == null ) {
-                    App.getDatabase().addNaoEscolar( title.getText().toString(),
-                                                     description.getText().toString(),
-                                                     start.getTimeInMillis(),
-                                                     end.getTimeInMillis() );
-                } //Modo edição. Edita a atividade não-escolar e atualiza no banco de dados.
+                //Modo adição. Adiciona a aula ao banco de dados.
+                if( aula == null ) {
+                    App.getDatabase().addAula( subjects.get( spinner.getSelectedItem() ).getCodigo(),
+                                               start.getTimeInMillis(),
+                                               end.getTimeInMillis() );
+                } //Modo edição. Edita a aula e atualiza no banco de dados.
                 else {
-                    naoEscolar.setNome( title.getText().toString() );
-                    naoEscolar.setDescricao( description.getText().toString() );
-                    naoEscolar.setDiaIni( start.getTimeInMillis() );
-                    naoEscolar.setDiaFim( end.getTimeInMillis() );
-                    App.getDatabase().updateNaoEscolar( naoEscolar );
+                    aula.setMateria( subjects.get( spinner.getSelectedItem() ) );
+                    aula.setDiaIni( start.getTimeInMillis() );
+                    aula.setDiaFim( end.getTimeInMillis() );
+                    App.getDatabase().updateAula( aula );
                 }
 
-                //Recarrega a lista de atividades não-escolares.
+                //Recarrega a lista de aulas.
                 update();
             }
         };

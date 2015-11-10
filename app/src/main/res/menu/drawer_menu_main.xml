@@ -10,5 +10,13 @@
             android:id="@+id/drawer_item_non_school"
             android:icon="@drawable/run"
             android:title="@string/words_non_school"/>
+        <item
+            android:id="@+id/drawer_item_aula"
+            android:icon="@drawable/books"
+            android:title="@string/words_class"/>
+        <item
+            android:id="@+id/drawer_item_avaliacao"
+            android:icon="@drawable/books"
+            android:title="@string/words_exam"/>
     </group>
 </menu>
