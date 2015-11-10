@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".SubjectViewActivity"/>
         <activity android:name=".NaoEscolarViewActivity"/>
+        <activity android:name=".AulaViewActivity"/>
+        <activity android:name=".AvaliacaoViewActivity"/>
     </application>
 
 </manifest>

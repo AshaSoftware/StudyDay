@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/words_name"
+                android:id="@+id/textView5"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#2f755b"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaliacao_nome"
+                android:textColor="#000"
+                android:gravity="center_vertical|center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/words_description"
+                android:id="@+id/textView6"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#2f755b"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaliacao_desc"
+                android:hint="@string/words_optional"
+                android:textColor="#000"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColorHint="#c9c9c9"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/words_select_a_subject"
+                android:id="@+id/textView7"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#2f755b"
+                android:textSize="16sp"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaliacao_subjects"
+                android:padding="5dp"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/words_grade"
+                android:id="@+id/textView8"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#2f755b"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaliacao_nota"
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number"
+                android:hint="@string/words_enter_with_a_value_between_0_and_100"
+                android:textColor="#000"
+                android:textColorHint="#c9c9c9"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/words_weight"
+                android:id="@+id/textView9"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#2f755b"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/avaliacao_peso"
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number"
+                android:hint="@string/words_enter_with_a_value_between_0_and_100"
+                android:textColor="#000"
+                android:textColorHint="#c9c9c9"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

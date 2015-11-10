@@ -16,7 +16,7 @@ import java.util.List;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
     private static final String DATABASE_NAME = "calendarSD";
 
@@ -40,15 +40,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                                         "nome_aval TEXT NOT NULL, " +
                                         "descricao_aval TEXT, " +
                                         "nota_aval INTEGER NOT NULL, " +
-                                        "peso_aval INTEGER NOT NULL " +
-                                        "FOREIGN KEY(`cod_materia`) REFERENCES cod_materia)";
+                                        "peso_aval INTEGER NOT NULL, " +
+                                        "FOREIGN KEY (cod_materia) REFERENCES cod_materia)";
 
         String CREATE_AULA_TABLE = "CREATE TABLE aula (" +
                                    "cod_aula INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                                    "cod_materia INTEGER NOT NULL," +
                                    "dia_ini_aula INTEGER NOT NULL," +
                                    "dia_fim_aula INTEGER NOT NULL," +
-                                   "FOREIGN KEY(`cod_materia`) REFERENCES cod_materia )";
+                                   "FOREIGN KEY (cod_materia) REFERENCES cod_materia )";
 
         String CREATE_NAOESCOLAR_TABLE = "CREATE TABLE nao_escolar ( " +
                                          "cod_ne INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -181,11 +181,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // 4. build book object
-        Avaliacao avaliacao = new Avaliacao( cursor.getInt( 1 ),
-                                             cursor.getString( 2 ),
-                                             cursor.getString( 3 ),
-                                             cursor.getInt( 4 ),
-                                             cursor.getInt( 5 ) );
+        Avaliacao avaliacao;
+        try {
+            avaliacao = new Avaliacao( cursor.getInt( 1 ),
+                                       cursor.getString( 2 ),
+                                       cursor.getString( 3 ),
+                                       cursor.getInt( 4 ),
+                                       cursor.getInt( 5 ) );
+        } catch( Exception e ) {
+            return null;
+        }
+
         avaliacao.setCodigo( cursor.getInt( 0 ) );
 
         cursor.close();
@@ -248,9 +254,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // 4. build book object
-        Aula aula = new Aula( cursor.getInt( 1 ),
-                              cursor.getLong( 2 ),
-                              cursor.getLong( 3 ) );
+        Aula aula;
+        try {
+            aula = new Aula( cursor.getInt( 1 ),
+                             cursor.getLong( 2 ),
+                             cursor.getLong( 3 ) );
+        } catch( Exception e ) {
+            return null;
+        }
+
         aula.setCodigo( cursor.getInt( 0 ) );
 
         cursor.close();
@@ -306,12 +318,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Avaliacao avaliacao;
         if( cursor.moveToFirst() ) {
             do {
-                avaliacao = new Avaliacao( cursor.getInt( 1 ),
-                                           cursor.getString( 2 ),
-                                           cursor.getString( 3 ),
-                                           cursor.getInt( 4 ),
-                                           cursor.getInt( 5 ) );
+                try {
+                    avaliacao = new Avaliacao( cursor.getInt( 1 ),
+                                               cursor.getString( 2 ),
+                                               cursor.getString( 3 ),
+                                               cursor.getInt( 4 ),
+                                               cursor.getInt( 5 ) );
+                } catch( Exception e ) {
+                    continue;
+                }
                 avaliacao.setCodigo( cursor.getInt( 0 ) );
+
                 // Add book to books
                 avaliacoes.add( avaliacao );
             } while( cursor.moveToNext() );
@@ -370,9 +387,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Aula aula;
         if( cursor.moveToFirst() ) {
             do {
-                aula = new Aula( cursor.getInt( 1 ),
-                                 cursor.getLong( 2 ),
-                                 cursor.getLong( 3 ) );
+                try {
+                    aula = new Aula( cursor.getInt( 1 ),
+                                     cursor.getLong( 2 ),
+                                     cursor.getLong( 3 ) );
+                } catch( Exception e ) {
+                    continue;
+                }
                 aula.setCodigo( cursor.getInt( 0 ) );
 
                 // Add book to books
@@ -419,7 +440,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        values.put( "cod_materia", avaliacao.getCodigoMateria() );
+        values.put( "cod_materia", avaliacao.getMateria().getCodigo() );
         values.put( "nome_aval", avaliacao.getNome() );
         values.put( "descricao_aval", avaliacao.getDescricao() );
         values.put( "nota_aval", avaliacao.getNota() );
@@ -468,9 +489,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        values.put( "cod_materia", aula.getCodigoMateria() );
-        values.put( "dia_ini_ne", aula.getDiaIni().getTimeInMillis() );
-        values.put( "dia_fim_ne", aula.getDiaFim().getTimeInMillis() );
+        values.put( "cod_materia", aula.getMateria().getCodigo() );
+        values.put( "dia_ini_aula", aula.getDiaIni().getTimeInMillis() );
+        values.put( "dia_fim_aula", aula.getDiaFim().getTimeInMillis() );
 
         // 3. updating row
         int i = db.update( "aula", //table

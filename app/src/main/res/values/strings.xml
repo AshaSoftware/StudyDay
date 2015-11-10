@@ -26,6 +26,16 @@
         <item>December</item>
     </string-array>
 
+    <string-array name="weeks">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
     <!-- DatePatters -->
     <string name="year_pattern">yyyy</string>
     <string name="date_pattern">MM/dd/yyyy</string>
@@ -59,6 +69,18 @@
     <string name="words_start">Start</string>
     <string name="words_end">End</string>
     <string name="words_non_school">Non-School</string>
+    <string name="words_class">Class</string>
+    <string name="words_add_class">Add class</string>
+    <string name="words_edit_class">Edit class</string>
+    <string name="words_add_a_new_subject">Add a new subject</string>
+    <string name="words_select_a_subject">Select a subject</string>
+    <string name="words_weight">Weight</string>
+    <string name="words_grade">Grade</string>
+    <string name="words_exam">Exam</string>
+    <string name="words_add_exam">Add exam</string>
+    <string name="words_edit_exam">Edit exam</string>
+    <string name="words_enter_with_a_value_between_0_and_100">Enter with a value between 0 and 100</string>
+    <string name="words_optional">Optional</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>

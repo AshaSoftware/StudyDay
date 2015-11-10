@@ -57,15 +57,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected( MenuItem menuItem ) {
-
+        Intent i;
         switch( menuItem.getItemId() ) {
             case R.id.drawer_item_subject:
-                Intent i = new Intent( this, SubjectViewActivity.class );
+                i = new Intent( this, SubjectViewActivity.class );
                 startActivity( i );
                 break;
             case R.id.drawer_item_non_school:
-                Intent j = new Intent( this, NaoEscolarViewActivity.class );
-                startActivity( j );
+                i = new Intent( this, NaoEscolarViewActivity.class );
+                startActivity( i );
+                break;
+            case R.id.drawer_item_aula:
+                i = new Intent( this, AulaViewActivity.class );
+                startActivity( i );
+                break;
+            case R.id.drawer_item_avaliacao:
+                i = new Intent( this, AvaliacaoViewActivity.class );
+                startActivity( i );
                 break;
             default:
                 return false;
