@@ -50,26 +50,27 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                                    "hora_fim_aula INTEGER NOT NULL," +
                                    "dia_aula INTEGER NOT NULL," +
                                    "FOREIGN KEY (cod_materia) REFERENCES cod_materia )";
-        
+
         String CREATE_NAOESCOLAR_TABLE = "CREATE TABLE nao_escolar ( " +
                                          "cod_ne INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                          "nome_ne TEXT NOT NULL, " +
                                          "descricao_ne TEXT, " +
                                          "dia_ini_ne INTEGER NOT NULL, " +
                                          "dia_fim_ne INTEGER )";
-        String CREATE_ESTUDO_TABLE = "CREATE TABLE nao_escolar ( " +
-                                        "cod_estudo INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                        "cod_materia INTEGER NOT NULL, " +
-                                        "descricao_estudo TEXT, " +
-                                        "dia_ini_estudo INTEGER NOT NULL, " +
-                                        "dia_fim_estudo INTEGER " +
-                                        "FOREIGN KEY (cod_materia) REFERENCES cod_materia )";
+
+        String CREATE_ESTUDO_TABLE = "CREATE TABLE estudo ( " +
+                                     "cod_estudo INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                     "cod_materia INTEGER NOT NULL, " +
+                                     "descricao_estudo TEXT, " +
+                                     "dia_ini_estudo INTEGER NOT NULL, " +
+                                     "dia_fim_estudo INTEGER, " +
+                                     "FOREIGN KEY (cod_materia) REFERENCES cod_materia )";
 
         db.execSQL( CREATE_MATERIA_TABLE );
         db.execSQL( CREATE_NAOESCOLAR_TABLE );
         db.execSQL( CREATE_AULA_TABLE );
         db.execSQL( CREATE_AVALIACAO_TABLE );
-        db.execSQL(CREATE_ESTUDO_TABLE);
+        db.execSQL( CREATE_ESTUDO_TABLE );
     }
 
     @Override
@@ -137,14 +138,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addAula( int materia, long inicio, long fim ) {
+    public void addAula( int materia, long inicio, long fim, int dia ) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put( "cod_materia", materia );
-        values.put( "dia_ini_aula", inicio );
-        values.put( "dia_fim_aula", fim );
+        values.put( "hora_ini_aula", inicio );
+        values.put( "hora_fim_aula", fim );
+        values.put( "dia_aula", dia );
 
         db.insert( "aula", null, values );
 
@@ -176,7 +178,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                                        cursor.getInt( 3 ),
                                        cursor.getInt( 4 ),
                                        cursor.getInt( 5 ) );
-        materia.setCodigo(cursor.getInt(0));
+        materia.setCodigo( cursor.getInt( 0 ) );
 
         cursor.close();
         db.close();
@@ -265,23 +267,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor =
                 db.query( "estudo", // a. table
-                        Colunas, // b. column names
-                        " cod_estudo = ?", // c. selections
-                        new String[]{ String.valueOf( Codigo ) }, // d. selections args
-                        null, // e. group by
-                        null, // f. having
-                        null, // g. order by
-                        null ); // h. limit
+                          Colunas, // b. column names
+                          " cod_estudo = ?", // c. selections
+                          new String[]{ String.valueOf( Codigo ) }, // d. selections args
+                          null, // e. group by
+                          null, // f. having
+                          null, // g. order by
+                          null ); // h. limit
 
         // 3. if we got results get the first one
         if( cursor != null )
             cursor.moveToFirst();
 
         // 4. build book object
-        Estudo estudo = new Estudo( cursor.getInt(1),
-                cursor.getString( 2 ),
-                cursor.getLong( 3 ),
-                cursor.getLong( 4 ) );
+        Estudo estudo = new Estudo( cursor.getInt( 1 ),
+                                    cursor.getString( 2 ),
+                                    cursor.getLong( 3 ),
+                                    cursor.getLong( 4 ) );
         estudo.setCodigo( cursor.getInt( 0 ) );
 
         cursor.close();
@@ -292,7 +294,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public Aula getAula( int Codigo ) {
-        String[] Colunas = { "cod_aula", "cod_materia", "dia_ini_aula", "dia_fim_aula" };
+        String[] Colunas = { "cod_aula", "cod_materia", "hora_ini_aula", "hora_fim_aula", "dia_aula" };
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -315,7 +317,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         try {
             aula = new Aula( cursor.getInt( 1 ),
                              cursor.getLong( 2 ),
-                             cursor.getLong( 3 ) );
+                             cursor.getLong( 3 ),
+                             cursor.getInt( 4 ) );
         } catch( Exception e ) {
             return null;
         }
@@ -444,10 +447,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Estudo estudo;
         if( cursor.moveToFirst() ) {
             do {
-                estudo = new Estudo( cursor.getInt(1),
-                        cursor.getString( 2 ),
-                        cursor.getLong( 3 ),
-                        cursor.getLong( 4 ) );
+                estudo = new Estudo( cursor.getInt( 1 ),
+                                     cursor.getString( 2 ),
+                                     cursor.getLong( 3 ),
+                                     cursor.getLong( 4 ) );
                 estudo.setCodigo( cursor.getInt( 0 ) );
 
                 // Add book to books
@@ -479,7 +482,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 try {
                     aula = new Aula( cursor.getInt( 1 ),
                                      cursor.getLong( 2 ),
-                                     cursor.getLong( 3 ) );
+                                     cursor.getLong( 3 ),
+                                     cursor.getInt( 4 ) );
                 } catch( Exception e ) {
                     continue;
                 }
@@ -508,7 +512,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put( "prof_materia", materia.getProfessor() );
         values.put( "cor_materia", materia.getCor() );
         values.put( "dif_prof", materia.getDifProfessor() );
-        values.put("dif_materia", materia.getDifMateria());
+        values.put( "dif_materia", materia.getDifMateria() );
 
         // 3. updating row
         int i = db.update( "materia", //table
@@ -585,9 +589,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         // 3. updating row
         int i = db.update( "estudo", //table
-                values, // column/value
-                "cod_estudo" + " = ?", // selections
-                new String[]{ String.valueOf( estudo.getCodigo() ) } ); //selection args
+                           values, // column/value
+                           "cod_estudo" + " = ?", // selections
+                           new String[]{ String.valueOf( estudo.getCodigo() ) } ); //selection args
 
         // 4. close
         db.close();
@@ -603,8 +607,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put( "cod_materia", aula.getMateria().getCodigo() );
-        values.put( "dia_ini_aula", aula.getDiaIni().getTimeInMillis() );
-        values.put( "dia_fim_aula", aula.getDiaFim().getTimeInMillis() );
+        values.put( "hora_ini_aula", aula.getIni().getTimeInMillis() );
+        values.put( "hora_fim_aula", aula.getFim().getTimeInMillis() );
+        values.put( "dia_aula", aula.getDia() );
 
         // 3. updating row
         int i = db.update( "aula", //table
@@ -667,8 +672,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         // 2. delete
         db.delete( "estudo", //table name
-                "cod_estudo" + " = ?",  // selections
-                new String[]{ String.valueOf( codigo ) } ); //selections args
+                   "cod_estudo" + " = ?",  // selections
+                   new String[]{ String.valueOf( codigo ) } ); //selections args
 
         // 3. close
         db.close();

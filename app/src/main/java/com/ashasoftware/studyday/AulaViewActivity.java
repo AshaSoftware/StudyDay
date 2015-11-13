@@ -64,8 +64,10 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
         //Carrega a lista de aulas e a exibe.
         HashMap<Integer, List<Aula>> aulas = new HashMap<>();
 
+        Toast.makeText( getBaseContext(), "before", Toast.LENGTH_SHORT ).show();
         for( Aula aula : App.getDatabase().getAllAulas() ) {
-            int week = aula.getDiaIni().get( Calendar.DAY_OF_WEEK ) - 1;
+            int week = aula.getDia();
+            Toast.makeText( getBaseContext(), "after", Toast.LENGTH_SHORT ).show();
             if( !aulas.containsKey( week ) ) aulas.put( week, new ArrayList<Aula>() );
             aulas.get( week ).add( aula );
         }
@@ -187,7 +189,7 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
         private final Aula aula;
         private final AlertDialog.Builder builder;
         private final TextView startStatus, endStatus;
-        private Spinner spinner;
+        private Spinner spinner, weekdays;
         private Calendar start, end;
         private final HashMap<String, Materia> subjects;
 
@@ -212,6 +214,7 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
             startStatus = (TextView) v.findViewById( R.id.start_datetime_status );
             endStatus = (TextView) v.findViewById( R.id.end_datetime_status );
             spinner = (Spinner) v.findViewById( R.id.aula_subjects );
+            weekdays = (Spinner) v.findViewById( R.id.aula_weekdays );
 
             subjects = new HashMap<>();
             List<String> adapterValue = new ArrayList<>();
@@ -224,13 +227,18 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
             adapter.setDropDownViewResource( R.layout.spinner_item_black_white );
             spinner.setAdapter( adapter );
 
+            adapter = new ArrayAdapter<>( context, android.R.layout.simple_list_item_1, getResources().getStringArray( R.array.weeks ) );
+            adapter.setDropDownViewResource( R.layout.spinner_item_black_white );
+            weekdays.setAdapter( adapter );
+
             //Modo edição. Preenche os campos.
             if( aula != null ) {
-                start = (Calendar) aula.getDiaIni().clone();
-                end = (Calendar) aula.getDiaFim().clone();
+                start = (Calendar) aula.getIni().clone();
+                end = (Calendar) aula.getFim().clone();
                 //Escreve o texto nos TextViews.
                 setDateTime( start, end );
                 spinner.setSelection( adapterValue.indexOf( aula.getMateria().getNome() ) );
+                weekdays.setSelection( aula.getDia() );
             } //Modo adição.
             else {
                 //Recupera a data e hora atual.
@@ -255,7 +263,7 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
                             .setInitialDate( start.getTime() )
                             .setIs24HourTime( true )
                             .build()
-                            .show();
+                            .show( 1 );
                 }
             } );
 
@@ -267,16 +275,14 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
                             .setInitialDate( end.getTime() )
                             .setIs24HourTime( true )
                             .build()
-                            .show();
+                            .show( 1 );
                 }
             } );
         }
 
         private void setDateTime( Calendar start, Calendar end ) {
-            startStatus.setText( App.getDateFormated( start.getTime() ) + " - " +
-                                 App.getTimeFormated( start.getTime() ) );
-            endStatus.setText( App.getDateFormated( end.getTime() ) + " - " +
-                               App.getTimeFormated( end.getTime() ) );
+            startStatus.setText( App.getTimeFormated( start.getTime() ) );
+            endStatus.setText( App.getTimeFormated( end.getTime() ) );
         }
 
         //Exibe a janela de diálogo.
@@ -304,16 +310,26 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
                     return;
                 }
 
+                if( weekdays.getSelectedItemPosition() == -1 ) {
+                    Toast.makeText( App.getContext(),
+                                    App.getContext().getResources().getText( R.string.words_invalid_field ),
+                                    Toast.LENGTH_SHORT ).show();
+                    return;
+                }
+
                 //Modo adição. Adiciona a aula ao banco de dados.
                 if( aula == null ) {
                     App.getDatabase().addAula( subjects.get( spinner.getSelectedItem() ).getCodigo(),
                                                start.getTimeInMillis(),
-                                               end.getTimeInMillis() );
+                                               end.getTimeInMillis(),
+                                               weekdays.getSelectedItemPosition()
+                                             );
                 } //Modo edição. Edita a aula e atualiza no banco de dados.
                 else {
                     aula.setMateria( subjects.get( spinner.getSelectedItem() ) );
-                    aula.setDiaIni( start.getTimeInMillis() );
-                    aula.setDiaFim( end.getTimeInMillis() );
+                    aula.setIni( start.getTimeInMillis() );
+                    aula.setFim( end.getTimeInMillis() );
+                    aula.setDia( weekdays.getSelectedItemPosition() );
                     App.getDatabase().updateAula( aula );
                 }
 

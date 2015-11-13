@@ -157,7 +157,7 @@ public class SlideDateTimePicker
      * Shows the dialog to the user. Make sure to call
      * {@link #setListener()} before calling this.
      */
-    public void show()
+    public void show( int mode )
     {
         if (mListener == null)
         {
@@ -180,6 +180,7 @@ public class SlideDateTimePicker
                         mIs24HourTime,
                         mTheme,
                         mIndicatorColor);
+        dialogFragment.setMode( mode );
 
         dialogFragment.show(mFragmentManager,
                 SlideDateTimeDialogFragment.TAG_SLIDE_DATE_TIME_DIALOG_FRAGMENT);

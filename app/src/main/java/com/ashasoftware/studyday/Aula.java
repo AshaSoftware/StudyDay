@@ -8,22 +8,24 @@ import java.util.Calendar;
 public class Aula {
 
     int Codigo;
-    Calendar diaIni, diaFim;
+    Calendar ini, fim;
+    int dia;
     Materia materia;
 
-    public Aula( Materia materia, long pIni, long pFim ) throws Exception {
+    public Aula( Materia materia, long pIni, long pFim, int dia ) throws Exception {
         if( materia == null ) {
             throw new Exception();
         }
 
         this.materia = materia;
-        diaIni = Calendar.getInstance();
-        setDiaIni( pIni );
-        diaFim = Calendar.getInstance();
-        setDiaFim( pFim );
+        ini = Calendar.getInstance();
+        setIni( pIni );
+        fim = Calendar.getInstance();
+        setFim( pFim );
+        this.dia = dia;
     }
 
-    public Aula( int codigoMateria, long pIni, long pFim ) throws Exception {
+    public Aula( int codigoMateria, long pIni, long pFim, int dia ) throws Exception {
         for( Materia m : App.getDatabase().getAllMaterias() ) {
             if( m.getCodigo() == codigoMateria ) {
                 this.materia = m;
@@ -35,10 +37,11 @@ public class Aula {
             throw new Exception();
         }
 
-        diaIni = Calendar.getInstance();
-        setDiaIni( pIni );
-        diaFim = Calendar.getInstance();
-        setDiaFim( pFim );
+        ini = Calendar.getInstance();
+        setIni( pIni );
+        fim = Calendar.getInstance();
+        setFim( pFim );
+        this.dia = dia;
     }
 
     public int getCodigo() {
@@ -49,20 +52,20 @@ public class Aula {
         return this.materia;
     }
 
-    public Calendar getDiaIni() {
-        return diaIni;
+    public Calendar getIni() {
+        return ini;
     }
 
-    public Calendar getDiaFim() {
-        return diaFim;
+    public Calendar getFim() {
+        return fim;
     }
 
-    public void setDiaIni( long timestamp ) {
-        diaIni.setTimeInMillis( timestamp );
+    public void setIni( long timestamp ) {
+        ini.setTimeInMillis( timestamp );
     }
 
-    public void setDiaFim( long timestamp ) {
-        diaFim.setTimeInMillis( timestamp );
+    public void setFim( long timestamp ) {
+        fim.setTimeInMillis( timestamp );
     }
 
     public void setCodigo( int codigo ) {
@@ -71,5 +74,13 @@ public class Aula {
 
     public void setMateria( Materia materia ) {
         this.materia = materia;
+    }
+
+    public int getDia() {
+        return dia;
+    }
+
+    public void setDia( int dia ) {
+        this.dia = dia;
     }
 }

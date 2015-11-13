@@ -78,9 +78,10 @@ public class AulaView extends RelativeLayout {
         border.setBackgroundColor( aula.getMateria().getCor() );
 
         nome.setText( aula.getMateria().getNome() );
-        String t1 = App.getDateFormated( aula.getDiaIni().getTime() ) + " ( " + App.getTimeFormated( aula.getDiaIni().getTime() ) + " )";
-        String t2 = App.getDateFormated( aula.getDiaFim().getTime() ) + " ( " + App.getTimeFormated( aula.getDiaFim().getTime() ) + " )";
-        interval.setText( t1 + "   -   " + t2 );
+        String[] weeks = getResources().getStringArray( R.array.weeks );
+        String t1 = App.getTimeFormated( aula.getIni().getTime() );
+        String t2 = App.getTimeFormated( aula.getFim().getTime() );
+        interval.setText( weeks[aula.getDia()] + " " + t1 + "   -   " + t2 );
     }
 
     public void setOnCommandListener( OnCommandListener onCommandListener ) {

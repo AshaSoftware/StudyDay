@@ -191,7 +191,7 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
                             .setInitialDate( start.getTime() )
                             .setIs24HourTime( true )
                             .build()
-                            .show();
+                            .show( 0 );
                 }
             } );
 
@@ -203,7 +203,7 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
                             .setInitialDate( end.getTime() )
                             .setIs24HourTime( true )
                             .build()
-                            .show();
+                            .show( 0 );
                 }
             } );
         }

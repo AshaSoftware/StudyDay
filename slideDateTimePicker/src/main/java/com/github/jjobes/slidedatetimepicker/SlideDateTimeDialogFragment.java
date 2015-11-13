@@ -1,9 +1,5 @@
 package com.github.jjobes.slidedatetimepicker;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +16,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * <p>The {@code DialogFragment} that contains the {@link SlidingTabLayout}
@@ -59,6 +59,11 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
         DateUtils.FORMAT_SHOW_WEEKDAY |
         DateUtils.FORMAT_SHOW_DATE |
         DateUtils.FORMAT_ABBREV_ALL;
+    private int mode = 0;
+
+    public void setMode( int mode ) {
+        this.mode = mode;
+    }
 
     public SlideDateTimeDialogFragment()
     {
@@ -229,10 +234,10 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
     private void initTabs()
     {
         // Set intial date on date tab
-        updateDateTab();
+        if( mode == 0 || mode == 2 ) updateDateTab();
 
         // Set initial time on time tab
-        updateTimeTab();
+        if( mode == 0 || mode == 1 ) updateTimeTab();
     }
 
     private void initButtons()
@@ -323,17 +328,17 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
             if (mIs24HourTime)
             {
                 formatter = new SimpleDateFormat("HH:mm");
-                mSlidingTabLayout.setTabText(1, formatter.format(mCalendar.getTime()));
+                mSlidingTabLayout.setTabText(mode==0?1:0, formatter.format(mCalendar.getTime()));
             }
             else
             {
                 formatter = new SimpleDateFormat("h:mm aa");
-                mSlidingTabLayout.setTabText(1, formatter.format(mCalendar.getTime()));
+                mSlidingTabLayout.setTabText(mode==0?1:0, formatter.format(mCalendar.getTime()));
             }
         }
         else  // display time using the device's default 12/24 hour format preference
         {
-            mSlidingTabLayout.setTabText(1, DateFormat.getTimeFormat(
+            mSlidingTabLayout.setTabText(mode==0?1:0, DateFormat.getTimeFormat(
                     mContext).format(mCalendar.getTimeInMillis()));
         }
     }
@@ -369,6 +374,38 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
         @Override
         public Fragment getItem(int position)
         {
+            /*if( mode == 1 ){
+                case 0:
+                    DateFragment dateFragment = DateFragment.newInstance(
+                            mTheme,
+                            mCalendar.get(Calendar.YEAR),
+                            mCalendar.get(Calendar.MONTH),
+                            mCalendar.get(Calendar.DAY_OF_MONTH),
+                            mMinDate,
+                            mMaxDate);
+                    dateFragment.setTargetFragment(SlideDateTimeDialogFragment.this, 100);
+                    return dateFragment;
+                case 1:
+                    TimeFragment timeFragment = TimeFragment.newInstance(
+                            mTheme,
+                            mCalendar.get(Calendar.HOUR_OF_DAY),
+                            mCalendar.get(Calendar.MINUTE),
+                            mIsClientSpecified24HourTime,
+                            mIs24HourTime);
+                    timeFragment.setTargetFragment(SlideDateTimeDialogFragment.this, 200);
+                    return timeFragment;
+            }else if( mode == 2 ){
+                DateFragment dateFragment = DateFragment.newInstance(
+                        mTheme,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH),
+                        mMinDate,
+                        mMaxDate);
+                dateFragment.setTargetFragment(SlideDateTimeDialogFragment.this, 100);
+                return dateFragment;
+            }*/
+
             switch (position)
             {
             case 0:
@@ -380,6 +417,7 @@ public class SlideDateTimeDialogFragment extends DialogFragment implements DateF
                     mMinDate,
                     mMaxDate);
                 dateFragment.setTargetFragment(SlideDateTimeDialogFragment.this, 100);
+                dateFragment.setMenuVisibility( mode==0 );
                 return dateFragment;
             case 1:
                 TimeFragment timeFragment = TimeFragment.newInstance(
