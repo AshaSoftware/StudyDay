@@ -46,8 +46,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         String CREATE_AULA_TABLE = "CREATE TABLE aula (" +
                                    "cod_aula INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                                    "cod_materia INTEGER NOT NULL," +
-                                   "dia_ini_aula INTEGER NOT NULL," +
-                                   "dia_fim_aula INTEGER NOT NULL," +
+                                   "hora_ini_aula INTEGER NOT NULL," +
+				   "hora_fim_aula INTEGER NOT NULL," +
+                                   "dia_aula INTEGER NOT NULL," +
                                    "FOREIGN KEY (cod_materia) REFERENCES cod_materia )";
         
         String CREATE_NAOESCOLAR_TABLE = "CREATE TABLE nao_escolar ( " +
