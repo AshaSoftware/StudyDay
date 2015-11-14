@@ -81,6 +81,12 @@
     <string name="words_edit_exam">Edit exam</string>
     <string name="words_enter_with_a_value_between_0_and_100">Enter with a value between 0 and 100</string>
     <string name="words_optional">Optional</string>
+    <string name="words_time">Time</string>
+    <string name="words_date">Date</string>
+    <string name="words_select_a_time">Select a time:</string>
+    <string name="words_select_a_date">Select a date:</string>
+    <string name="words_select_a_date_time">Select a date and time:</string>
+    <string name="words_select_a">Select a:</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>

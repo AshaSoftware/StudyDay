@@ -16,12 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
-import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,10 +60,8 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
         //Carrega a lista de aulas e a exibe.
         HashMap<Integer, List<Aula>> aulas = new HashMap<>();
 
-        Toast.makeText( getBaseContext(), "before", Toast.LENGTH_SHORT ).show();
         for( Aula aula : App.getDatabase().getAllAulas() ) {
             int week = aula.getDia();
-            Toast.makeText( getBaseContext(), "after", Toast.LENGTH_SHORT ).show();
             if( !aulas.containsKey( week ) ) aulas.put( week, new ArrayList<Aula>() );
             aulas.get( week ).add( aula );
         }
@@ -258,24 +252,34 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
             startStatus.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View v ) {
-                    new SlideDateTimePicker.Builder( getSupportFragmentManager() )
-                            .setListener( startDateTimeListener )
-                            .setInitialDate( start.getTime() )
-                            .setIs24HourTime( true )
-                            .build()
-                            .show( 1 );
+                    new DateTimeDialog( AulaViewActivity.this, start )
+                            .setMode( 2 )
+                            .setOkClickListener( new DateTimeDialog.OkClickListener() {
+                                @Override
+                                public void okClick( int year, int month, int day, int hour, int minute ) {
+                                    start.set( Calendar.HOUR, hour );
+                                    start.set( Calendar.MINUTE, minute );
+                                    setDateTime( start, end );
+                                }
+                            } )
+                            .show();
                 }
             } );
 
             endStatus.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View v ) {
-                    new SlideDateTimePicker.Builder( getSupportFragmentManager() )
-                            .setListener( endDateTimeListener )
-                            .setInitialDate( end.getTime() )
-                            .setIs24HourTime( true )
-                            .build()
-                            .show( 1 );
+                    new DateTimeDialog( AulaViewActivity.this, end )
+                            .setMode( 2 )
+                            .setOkClickListener( new DateTimeDialog.OkClickListener() {
+                                @Override
+                                public void okClick( int year, int month, int day, int hour, int minute ) {
+                                    end.set( Calendar.HOUR, hour );
+                                    end.set( Calendar.MINUTE, minute );
+                                    setDateTime( start, end );
+                                }
+                            } )
+                            .show();
                 }
             } );
         }
@@ -335,32 +339,6 @@ public class AulaViewActivity extends AppCompatActivity implements AulaView.OnCo
 
                 //Recarrega a lista de aulas.
                 update();
-            }
-        };
-
-        //Evento chamado quando o usuario seleciona uma data e hora inicial.
-        private final SlideDateTimeListener startDateTimeListener = new SlideDateTimeListener() {
-            @Override
-            public void onDateTimeSet( Date date ) {
-                start.setTimeInMillis( date.getTime() );
-                setDateTime( start, end );
-            }
-
-            @Override
-            public void onDateTimeCancel() {
-            }
-        };
-
-        //Evento chamado quando o usuario seleciona uma data e hora final.
-        private final SlideDateTimeListener endDateTimeListener = new SlideDateTimeListener() {
-            @Override
-            public void onDateTimeSet( Date date ) {
-                end.setTimeInMillis( date.getTime() );
-                setDateTime( start, end );
-            }
-
-            @Override
-            public void onDateTimeCancel() {
             }
         };
     }

@@ -15,11 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
-import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -186,24 +182,32 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
             startStatus.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View v ) {
-                    new SlideDateTimePicker.Builder( getSupportFragmentManager() )
-                            .setListener( startDateTimeListener )
-                            .setInitialDate( start.getTime() )
-                            .setIs24HourTime( true )
-                            .build()
-                            .show( 0 );
+                    new DateTimeDialog( NaoEscolarViewActivity.this, start )
+                            .setMode( 0 )
+                            .setOkClickListener( new DateTimeDialog.OkClickListener() {
+                                @Override
+                                public void okClick( int year, int month, int day, int hour, int minute ) {
+                                    start.set( year, month, day, hour, minute );
+                                    setDateTime( start, end );
+                                }
+                            } )
+                            .show();
                 }
             } );
 
             endStatus.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View v ) {
-                    new SlideDateTimePicker.Builder( getSupportFragmentManager() )
-                            .setListener( endDateTimeListener )
-                            .setInitialDate( end.getTime() )
-                            .setIs24HourTime( true )
-                            .build()
-                            .show( 0 );
+                    new DateTimeDialog( NaoEscolarViewActivity.this, end )
+                            .setMode( 0 )
+                            .setOkClickListener( new DateTimeDialog.OkClickListener() {
+                                @Override
+                                public void okClick( int year, int month, int day, int hour, int minute ) {
+                                    end.set( year, month, day, hour, minute );
+                                    setDateTime( start, end );
+                                }
+                            } )
+                            .show();
                 }
             } );
         }
@@ -258,32 +262,6 @@ public class NaoEscolarViewActivity extends AppCompatActivity implements NaoEsco
 
                 //Recarrega a lista de atividades não-escolares.
                 update();
-            }
-        };
-
-        //Evento chamado quando o usuario seleciona uma data e hora inicial.
-        private final SlideDateTimeListener startDateTimeListener = new SlideDateTimeListener() {
-            @Override
-            public void onDateTimeSet( Date date ) {
-                start.setTimeInMillis( date.getTime() );
-                setDateTime( start, end );
-            }
-
-            @Override
-            public void onDateTimeCancel() {
-            }
-        };
-
-        //Evento chamado quando o usuario seleciona uma data e hora final.
-        private final SlideDateTimeListener endDateTimeListener = new SlideDateTimeListener() {
-            @Override
-            public void onDateTimeSet( Date date ) {
-                end.setTimeInMillis( date.getTime() );
-                setDateTime( start, end );
-            }
-
-            @Override
-            public void onDateTimeCancel() {
             }
         };
     }

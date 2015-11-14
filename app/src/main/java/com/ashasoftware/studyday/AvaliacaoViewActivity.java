@@ -197,9 +197,17 @@ public class AvaliacaoViewActivity extends AppCompatActivity implements Avaliaca
         private final DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
+                int notaValor, pesoValor;
 
-                int notaValor = Integer.parseInt( nota.getText().toString() );
-                int pesoValor = Integer.parseInt( peso.getText().toString() );
+                try {
+                    notaValor = Integer.parseInt( nota.getText().toString() );
+                    pesoValor = Integer.parseInt( peso.getText().toString() );
+                } catch( Exception e ) {
+                    Toast.makeText( App.getContext(),
+                                    App.getContext().getResources().getText( R.string.words_invalid_field ),
+                                    Toast.LENGTH_SHORT ).show();
+                    return;
+                }
 
                 if( nome.getText().length() == 0 ||
                     notaValor < 0 || notaValor > 100 ||
