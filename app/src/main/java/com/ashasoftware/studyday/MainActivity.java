@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 i = new Intent( this, AvaliacaoViewActivity.class );
                 startActivity( i );
                 break;
+            case R.id.drawer_item_estudo:
+                new EstudoGenerate();
+                break;
             default:
                 return false;
         }
