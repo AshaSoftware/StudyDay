@@ -8,9 +8,13 @@ import java.util.ArrayList;
 public class HourArrayManager {
     ArrayList <Integer> tasks = new ArrayList<>();
 
-    public HourArrayManager(int task) {
-        tasks.add(task);
+    public void addTasks(int ini, int fim) {
+        for(int i=ini; i<=fim; i++){
+            tasks.add(i);
+        }
     }
+
+    public HourArrayManager(){}
 
     public boolean VerificarDisponibilidade (int minIni, int minFim){
         for(int i=minIni; i<=minFim; i++){

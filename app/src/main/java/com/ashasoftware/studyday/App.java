@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by tiago on 25/10/15.
@@ -18,6 +19,9 @@ public class App extends Application {
     private static SimpleDateFormat dateFormat;
 
     private static SimpleDateFormat timeFormat;
+
+    private static YearManager Years = new YearManager();
+
 
     @Override
     public void onCreate() {
@@ -44,4 +48,6 @@ public class App extends Application {
     public static String getDateFormated( Date date ) {
         return dateFormat.format( date );
     }
+
+    public static YearManager getYears() {return Years; }
 }

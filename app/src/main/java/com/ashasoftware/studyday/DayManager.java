@@ -13,7 +13,7 @@ public class DayManager {
     public DayManager(int pDays) {
         Days = pDays;
         for(int i=0;i<Days;i++){
-            days.add(new HourArrayManager(i));
+            days.add(new HourArrayManager());
         }
     }
 

@@ -87,7 +87,7 @@
     <string name="words_select_a_date">Select a date:</string>
     <string name="words_select_a_date_time">Select a date and time:</string>
     <string name="words_select_a">Select a:</string>
-    <string name="words_estudo">Study</string>
+    <string name="words_estudo">Generate Study</string>
 
     <!-- Subject -->
     <string name="show_subject">Show Subject</string>

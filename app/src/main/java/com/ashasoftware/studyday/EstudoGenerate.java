@@ -19,25 +19,24 @@ public class EstudoGenerate {
     ArrayList <MateriaEstudo> materias = new ArrayList<>();
 
     public EstudoGenerate(){
+        App.getDatabase().deleteAllEstudos();
+
         for(Materia materia: App.getDatabase().getAllMaterias()){
             Pesos += materia.getDifMateria() + materia.getDifProfessor();
             materias.add(new MateriaEstudo(materia,materia.getDifMateria() + materia.getDifProfessor()));
         }
         //Para a quantidade de horas de estudo: Total de Pesos / horas de Estudo
         horaPorPeso = horasEstudo / Pesos;
-        for( int i=0; i<7;i++){
-            alocaEstudo(i,horasEstudo/5);
-        }
 
-
-    }
-
-    public void alocaEstudo(int dia, float horasPorDia) {
-        List<Aula> aulas = App.getDatabase().getAllAulas();
-        for (Aula aula: aulas){
-            if(aula.dia == dia){
-                App.getDatabase().addEstudo(aula.getMateria().getCodigo(),"It's recommended that you study " + aula.getMateria().getNome() + " every " + aula.dayToString(aula.getDia()), 0, 0);
+        Calendar inicio = Calendar.getInstance();
+        Calendar fim = Calendar.getInstance();
+        fim.set(Calendar.HOUR,fim.get(Calendar.HOUR)+1);
+        for(MateriaEstudo EstudoAux: materias) {
+            while (!App.getYears().addTaskStudy(inicio.getTimeInMillis(), fim.getTimeInMillis())) {
+                inicio.set(Calendar.HOUR,fim.get(Calendar.HOUR)+1);
+                fim.set(Calendar.HOUR,fim.get(Calendar.HOUR)+1);
             }
+            App.getDatabase().addEstudo(EstudoAux.getSubject().getCodigo(),"",inicio.getTimeInMillis(),fim.getTimeInMillis());
         }
     }
 
