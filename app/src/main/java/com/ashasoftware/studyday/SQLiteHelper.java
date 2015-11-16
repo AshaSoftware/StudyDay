@@ -21,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "calendarSD";
 
     public SQLiteHelper( Context context ) {
-        super( context, DATABASE_NAME, null, DATABASE_VERSION );
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -86,9 +86,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put( "prof_materia", professor );
         values.put( "cor_materia", cor );
         values.put( "dif_prof", difProfessor );
-        values.put( "dif_materia", difMateria );
+        values.put("dif_materia", difMateria);
 
-        db.insert( "materia", null, values );
+        db.insert("materia", null, values);
 
         db.close();
     }
@@ -101,9 +101,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put( "nome_aval", nome );
         values.put( "descricao_aval", descricao );
         values.put( "nota_aval", nota );
-        values.put( "peso_aval", peso );
+        values.put("peso_aval", peso);
 
-        db.insert( "avaliacao", null, values );
+        db.insert("avaliacao", null, values);
 
         db.close();
     }
@@ -132,7 +132,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put( "cod_materia", materia );
         values.put( "descricao_estudo", descricao );
-        values.put( "dia_ini_estudo", inicio );
+        values.put("dia_ini_estudo", inicio);
         values.put("dia_fim_estudo", fim);
 
         db.insert("estudo", null, values);
@@ -148,7 +148,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put( "cod_materia", materia );
         values.put( "hora_ini_aula", inicio );
         values.put( "hora_fim_aula", fim );
-        values.put( "dia_aula", dia );
+        values.put("dia_aula", dia);
 
         db.insert("aula", null, values);
 
@@ -232,7 +232,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public NaoEscolar getNaoEscolar( int Codigo ) {
-        String[] Colunas = { "cod_ne", "nome_ne", "descricao_ne", "dia_ne", "dia_fim_ne" };
+        String[] Colunas = { "cod_ne", "nome_ne", "descricao_ne", "dia_ini_ne", "dia_fim_ne" };
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -251,7 +251,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // 4. build book object
-        NaoEscolar naoescolar = new NaoEscolar( cursor.getString( 1 ),
+        NaoEscolar naoescolar = new NaoEscolar( cursor.getString(1),
                                                 cursor.getString( 2 ),
                                                 cursor.getLong( 3 ),
                                                 cursor.getLong( 4 ) );
@@ -270,26 +270,28 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor =
-                db.query( "estudo", // a. table
-                          Colunas, // b. column names
-                          " cod_estudo = ?", // c. selections
-                          new String[]{ String.valueOf( Codigo ) }, // d. selections args
-                          null, // e. group by
-                          null, // f. having
-                          null, // g. order by
-                          null ); // h. limit
+                db.query("estudo", // a. table
+                        Colunas, // b. column names
+                        " cod_estudo = ?", // c. selections
+                        new String[]{String.valueOf(Codigo)}, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
 
         // 3. if we got results get the first one
         if( cursor != null )
             cursor.moveToFirst();
 
         // 4. build book object
-        Estudo estudo = new Estudo( cursor.getInt(1),
-                                    cursor.getString( 2 ),
-                                    cursor.getLong( 3 ),
-                                    cursor.getLong( 4 ) );
-        estudo.setCodigo( cursor.getInt( 0 ) );
-
+        Estudo estudo = new Estudo();
+        try {
+            estudo = new Estudo(cursor.getInt(1),
+                    cursor.getString(2),
+                    cursor.getLong(3),
+                    cursor.getLong(4));
+            estudo.setCodigo(cursor.getInt(0));
+        } catch(Exception e){}
         cursor.close();
         db.close();
 
@@ -303,14 +305,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor =
-                db.query( "aula", // a. table
-                          Colunas, // b. column names
-                          " cod_aula = ?", // c. selections
-                          new String[]{ String.valueOf( Codigo ) }, // d. selections args
-                          null, // e. group by
-                          null, // f. having
-                          null, // g. order by
-                          null ); // h. limit
+                db.query("aula", // a. table
+                        Colunas, // b. column names
+                        " cod_aula = ?", // c. selections
+                        new String[]{String.valueOf(Codigo)}, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
 
         // 3. if we got results get the first one
         if( cursor != null )
@@ -419,7 +421,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         NaoEscolar naoescolar;
         if( cursor.moveToFirst() ) {
             do {
-                naoescolar = new NaoEscolar( cursor.getString( 1 ),
+                naoescolar = new NaoEscolar( cursor.getString(1),
                                              cursor.getString( 2 ),
                                              cursor.getLong( 3 ),
                                              cursor.getLong( 4 ) );
@@ -633,9 +635,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. delete
-        db.delete( "materia", //table name
-                   "cod_materia" + " = ?",  // selections
-                   new String[]{ String.valueOf( codigo ) } ); //selections args
+        db.delete("materia", //table name
+                "cod_materia" + " = ?",  // selections
+                new String[]{String.valueOf(codigo)}); //selections args
 
         // 3. close
         db.close();
@@ -647,23 +649,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. delete
-        db.delete( "avaliacao", //table name
-                   "cod_aval" + " = ?",  // selections
-                   new String[]{ String.valueOf( codigo ) } ); //selections args
+        db.delete("avaliacao", //table name
+                "cod_aval" + " = ?",  // selections
+                new String[]{String.valueOf(codigo)}); //selections args
 
         // 3. close
         db.close();
     }
 
     public void deleteNaoEscolar( int codigo ) {
+        App.getYears().rmTaskNonSchool(getNaoEscolar(codigo).getDiaIni().getTimeInMillis(), getNaoEscolar(codigo).getDiaFim().getTimeInMillis());
+
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. delete
-        db.delete( "nao_escolar", //table name
-                   "cod_ne" + " = ?",  // selections
-                   new String[]{ String.valueOf( codigo ) } ); //selections args
+        db.delete("nao_escolar", //table name
+                "cod_ne" + " = ?",  // selections
+                new String[]{String.valueOf(codigo)}); //selections args
 
         // 3. close
         db.close();
@@ -671,27 +675,30 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public void deleteEstudo( int codigo ) {
 
+        App.getYears().rmTaskStudy(getEstudo(codigo).getDiaIni().getTimeInMillis(), getEstudo(codigo).getDiaFim().getTimeInMillis());
+
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
-
         // 2. delete
-        db.delete( "estudo", //table name
-                   "cod_estudo" + " = ?",  // selections
-                   new String[]{ String.valueOf( codigo ) } ); //selections args
+        db.delete("estudo", //table name
+                "cod_estudo" + " = ?",  // selections
+                new String[]{String.valueOf(codigo)}); //selections args
 
         // 3. close
         db.close();
     }
 
     public void deleteAula( int codigo ) {
+        App.getYears().rmTaskClass(getAula(codigo).getIni().getTimeInMillis(), getAula(codigo).getFim().getTimeInMillis(), getAula(codigo).getDia());
+
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. delete
-        db.delete( "aula", //table name
-                   "cod_aula" + " = ?",  // selections
-                   new String[]{ String.valueOf( codigo ) } ); //selections args
+        db.delete("aula", //table name
+                "cod_aula" + " = ?",  // selections
+                new String[]{String.valueOf(codigo)}); //selections args
 
         // 3. close
         db.close();
@@ -712,21 +719,84 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if( cursor.moveToFirst() ) {
             do {
                 estudo = new Estudo( cursor.getInt( 1 ),
-                        cursor.getString( 2 ),
+                        cursor.getString(2),
                         cursor.getLong( 3 ),
-                        cursor.getLong( 4 ) );
+                        cursor.getLong(4) );
                 estudo.setCodigo( cursor.getInt( 0 ) );
 
                 // Add book to books
                 estudos.add( estudo );
             } while( cursor.moveToNext() );
         }
-        for( Estudo estudoAux: estudos){
-            db.delete( "estudo", //table name
-                    "cod_estudo" + " = ?",  // selections
-                    new String[]{ String.valueOf( estudoAux.getCodigo() ) } ); //selections args
+        cursor.close();
+        for( Estudo estudoAux: estudos) {
+            deleteEstudo(estudoAux.getCodigo());
         }
 
+        db.close();
+    }
+
+    public void deleteAllAulas(int materia) {
+        List<Aula> aulas = new LinkedList<>();
+
+        // 1. build the query
+        String query = "SELECT  * FROM " + "aula";
+
+        // 2. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery( query, null );
+
+        // 3. go over each row, build book and add it to list
+        Aula aula;
+        if( cursor.moveToFirst() ) {
+            do {
+                try {
+                    aula = new Aula(cursor.getInt(1),
+                            cursor.getLong(2),
+                            cursor.getLong(3), cursor.getInt(4));
+                    aula.setCodigo(cursor.getInt(0));
+
+                    // Add book to books
+                    aulas.add(aula);
+                } catch(Exception e){}
+            } while( cursor.moveToNext() );
+        }
+        for( Aula aulaAux: aulas){
+            deleteAula(aulaAux.getCodigo());
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public void deleteAllAvaliacoes(int materia) {
+        List<Avaliacao> avaliacoes = new LinkedList<>();
+
+        // 1. build the query
+        String query = "SELECT  * FROM " + "avaliacao";
+
+        // 2. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery( query, null );
+
+        // 3. go over each row, build book and add it to list
+        Avaliacao avaliacao;
+        if( cursor.moveToFirst() ) {
+            do {
+                try {
+                    avaliacao = new Avaliacao(cursor.getInt(1),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getInt(4), cursor.getInt(5));
+                    avaliacao.setCodigo(cursor.getInt(0));
+
+                    // Add book to books
+                    avaliacoes.add(avaliacao);
+                } catch (Exception e) {}
+            } while( cursor.moveToNext() );
+        }
+        for( Avaliacao avaliacaoAux: avaliacoes){
+            deleteAvaliacao(avaliacaoAux.getCodigo());
+        }
         cursor.close();
         db.close();
     }
