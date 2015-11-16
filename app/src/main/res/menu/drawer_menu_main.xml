@@ -18,5 +18,9 @@
             android:id="@+id/drawer_item_avaliacao"
             android:icon="@drawable/books"
             android:title="@string/words_exam"/>
+        <item
+            android:id="@+id/drawer_item_estudo"
+            android:icon="@drawable/plus"
+            android:title="@string/words_estudo"/>
     </group>
 </menu>
