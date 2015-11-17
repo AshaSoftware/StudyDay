@@ -14,6 +14,14 @@ public class HourArrayManager {
         }
     }
 
+    public void rmTasks(int ini, int fim) {
+        for(int i=ini; i<=fim; i++){
+            if(tasks.contains((Object)i)){
+                tasks.remove((Object)i);
+            }
+        }
+    }
+
     public HourArrayManager(){}
 
     public boolean VerificarDisponibilidade (int minIni, int minFim){

@@ -73,6 +73,8 @@ public class SubjectViewActivity extends AppCompatActivity implements SubjectVie
             @Override
             public void onClick( DialogInterface dialog, int which ) {
                 App.getDatabase().deleteMateria( m.getCodigo() );
+                App.getDatabase().deleteAllAulas(m.getCodigo());
+                App.getDatabase().deleteAllAvaliacoes(m.getCodigo());
                 update();
             }
         } );

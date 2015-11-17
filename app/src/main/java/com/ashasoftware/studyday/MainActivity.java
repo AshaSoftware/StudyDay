@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById( R.id.drawer_menu_main );
         navigationView.setNavigationItemSelectedListener( this );
+
+        App.getYears();
     }
 
     @Override

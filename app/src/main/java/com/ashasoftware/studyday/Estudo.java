@@ -12,6 +12,8 @@ public class Estudo {
     String Descricao;
     Calendar diaIni, diaFim;
 
+    public Estudo(){}
+
     public Estudo( int pCodigoMateria, String pDescricao, long pInicio, long pFim ) {
         CodigoMateria = pCodigoMateria;
         Descricao = pDescricao;

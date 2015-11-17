@@ -35,6 +35,24 @@ public class YearManager {
         }
     }
 
+    public void rmTaskNonSchool(long ini, long fim){
+        Calendar Start = Calendar.getInstance();
+        Calendar End = Calendar.getInstance();
+        Start.setTimeInMillis(ini);
+        End.setTimeInMillis(fim);
+        if(Start.get(Calendar.YEAR) == tY.get(Calendar.YEAR)){
+            thisYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).rmTasks(Start.get(Calendar.MINUTE)
+                    + Start.get(Calendar.HOUR) * 60
+                    , End.get(Calendar.MINUTE)
+                    + End.get(Calendar.HOUR) * 60);
+        } else {
+            NextYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).rmTasks(Start.get(Calendar.MINUTE)
+                    + Start.get(Calendar.HOUR) * 60
+                    , End.get(Calendar.MINUTE)
+                    + End.get(Calendar.HOUR) * 60);
+        }
+    }
+
     public void addTaskClass(long ini, long fim, int dia){
         Calendar Start = Calendar.getInstance();
         Calendar End = Calendar.getInstance();
@@ -62,6 +80,33 @@ public class YearManager {
         }
     }
 
+    public void rmTaskClass(long ini, long fim, int dia){
+        Calendar Start = Calendar.getInstance();
+        Calendar End = Calendar.getInstance();
+        Start.setTimeInMillis(ini);
+        End.setTimeInMillis(fim);
+        Start.set(Calendar.DAY_OF_WEEK, dia);
+        if(Start.get(Calendar.YEAR) == tY.get(Calendar.YEAR)){
+            for(int i=Start.get(Calendar.MONTH);i<=12;i++){
+                for(int j=Start.get(Calendar.DAY_OF_MONTH);j<Start.getActualMaximum(Calendar.DAY_OF_MONTH);j += 7){
+                    thisYear.months.get(i-1).days.get(j).rmTasks(Start.get(Calendar.MINUTE)
+                            + Start.get(Calendar.HOUR) * 60
+                            , End.get(Calendar.MINUTE)
+                            + End.get(Calendar.HOUR) * 60);
+                }
+            }
+        } else {
+            for(int i=Start.get(Calendar.MONTH);i<=12;i++){
+                for(int j=Start.get(Calendar.DAY_OF_MONTH);j<Start.getActualMaximum(Calendar.DAY_OF_MONTH);j += 7){
+                    NextYear.months.get(i-1).days.get(j).rmTasks(Start.get(Calendar.MINUTE)
+                            + Start.get(Calendar.HOUR) * 60
+                            , End.get(Calendar.MINUTE)
+                            + End.get(Calendar.HOUR) * 60);
+                }
+            }
+        }
+    }
+
     public boolean addTaskStudy(long ini, long fim){
         Calendar Start = Calendar.getInstance();
         Calendar End = Calendar.getInstance();
@@ -78,6 +123,31 @@ public class YearManager {
         } else {
             if(NextYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).VerificarDisponibilidade(Start.MINUTE,End.MINUTE)) {
                 NextYear.months.get(Start.MONTH - 1).days.get(Start.DAY_OF_MONTH).addTasks(Start.get(Calendar.MINUTE)
+                        + Start.get(Calendar.HOUR) * 60
+                        , End.get(Calendar.MINUTE)
+                        + End.get(Calendar.HOUR) * 60);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean rmTaskStudy(long ini, long fim){
+        Calendar Start = Calendar.getInstance();
+        Calendar End = Calendar.getInstance();
+        Start.setTimeInMillis(ini);
+        End.setTimeInMillis(fim);
+        if(Start.get(Calendar.YEAR) == tY.get(Calendar.YEAR)){
+            if(thisYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).VerificarDisponibilidade(Start.MINUTE,End.MINUTE)){
+                thisYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).rmTasks(Start.get(Calendar.MINUTE)
+                        +Start.get(Calendar.HOUR)*60
+                        ,End.get(Calendar.MINUTE)
+                        +End.get(Calendar.HOUR)*60);
+                return true;
+            }
+        } else {
+            if(NextYear.months.get(Start.MONTH -1).days.get(Start.DAY_OF_MONTH).VerificarDisponibilidade(Start.MINUTE,End.MINUTE)) {
+                NextYear.months.get(Start.MONTH - 1).days.get(Start.DAY_OF_MONTH).rmTasks(Start.get(Calendar.MINUTE)
                         + Start.get(Calendar.HOUR) * 60
                         , End.get(Calendar.MINUTE)
                         + End.get(Calendar.HOUR) * 60);
