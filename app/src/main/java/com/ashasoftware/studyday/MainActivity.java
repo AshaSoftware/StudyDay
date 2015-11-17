@@ -31,9 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById( R.id.drawer_menu_main );
         navigationView.setNavigationItemSelectedListener( this );
-
-        App.getYears();
-    }
+  }
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
@@ -77,8 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 i = new Intent( this, AvaliacaoViewActivity.class );
                 startActivity( i );
                 break;
+            case R.id.drawer_item_estudo2:
+                i = new Intent( this, EstudoViewActivity.class );
+                startActivity( i );
+                break;
             case R.id.drawer_item_estudo:
-                new EstudoGenerate();
+                //new EstudoGenerate();
                 break;
             default:
                 return false;

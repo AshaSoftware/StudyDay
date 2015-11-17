@@ -2,10 +2,11 @@ package com.ashasoftware.studyday;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by tiago on 25/10/15.
@@ -20,8 +21,9 @@ public class App extends Application {
 
     private static SimpleDateFormat timeFormat;
 
-    private static YearManager Years = new YearManager();
+    private static Interval interval;
 
+    private static File myFolder;
 
     @Override
     public void onCreate() {
@@ -31,6 +33,12 @@ public class App extends Application {
         database = new SQLiteHelper( context );
         dateFormat = new SimpleDateFormat( context.getResources().getString( R.string.date_pattern ) );
         timeFormat = new SimpleDateFormat( context.getResources().getString( R.string.short_time_pattern ) );
+
+        myFolder = new File( Environment.getExternalStorageDirectory(), "StudyDay" );
+        myFolder.mkdirs();
+
+        interval = Interval.open();
+
     }
 
     public static Context getContext() {
@@ -49,5 +57,11 @@ public class App extends Application {
         return dateFormat.format( date );
     }
 
-    public static YearManager getYears() {return Years; }
+    public static Interval getInterval() {
+        return interval;
+    }
+
+    public static File myFolder() {
+        return myFolder;
+    }
 }

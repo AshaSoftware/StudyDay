@@ -21,7 +21,7 @@
         <activity android:name=".NaoEscolarViewActivity"/>
         <activity android:name=".AulaViewActivity"/>
         <activity android:name=".AvaliacaoViewActivity"/>
-        <activity android:name=".DateActivity"/>
+        <activity android:name=".EstudoViewActivity"/>
     </application>
 
 </manifest>

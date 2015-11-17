@@ -189,21 +189,70 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
             return date;
         }
 
+        Drawable pencil = getResources().getDrawable( R.drawable.logo_pencil );
+        Drawable book = getResources().getDrawable( R.drawable.logo_book );
+        Drawable ball = getResources().getDrawable( R.drawable.logo_ball );
+        Paint numberColor = new Paint( Paint.ANTI_ALIAS_FLAG );
+
         @Override
         protected void onDraw( Canvas canvas ) {
             super.onDraw( canvas );
             //Desenha a borda.
             canvas.drawRect( 0, 0, getWidth(), getHeight(), BORDER_STYLE );
 
-            int left = 10;
+            int count = 0;
+            int offset = 0;
+
             for( Estudo estudo : App.getDatabase().getAllEstudos() ) {
                 if( date.getTime() / 86400000 == estudo.getDiaIni().getTimeInMillis() / 86400000 ) {
-                    Drawable d = getResources().getDrawable( R.drawable.pencil );
-                    d.setBounds( left, 10, left + 32, 42 );
-                    d.draw( canvas );
-                    left += 48;
+                    count++;
                 }
             }
+
+            if( count > 0 ) {
+                desenharIcone( canvas, book, count, offset );
+                offset += 40;
+            }
+
+            count = 0;
+
+            for( NaoEscolar ne : App.getDatabase().getAllNaoEscolares() ) {
+                if( date.getTime() / 86400000 == ne.getDiaIni().getTimeInMillis() / 86400000 ) {
+                    count++;
+                }
+            }
+
+            if( count > 0 ) {
+                desenharIcone( canvas, ball, count, offset );
+                offset += 40;
+            }
+
+            count = 0;
+
+            for( Aula aula : App.getDatabase().getAllAulas() ) {
+                if( date.getDay() == aula.getDia() ) {
+                    count++;
+                }
+            }
+
+            if( count > 0 ) {
+                desenharIcone( canvas, pencil, count, offset );
+                offset += 40;
+            }
+        }
+
+        private void desenharIcone( Canvas canvas, Drawable icon, int count, int offset ) {
+            numberColor.setColor( Color.RED );
+            numberColor.setStyle( Paint.Style.FILL );
+
+            icon.setBounds( getWidth() - 42 - offset, 6, getWidth() - 6 - offset, 42 );
+            icon.draw( canvas );
+            canvas.drawCircle( getWidth() - 12 - offset, 12, 10, numberColor );
+
+            numberColor.setColor( Color.WHITE );
+            numberColor.setTextAlign( Paint.Align.CENTER );
+            numberColor.setTextSize( 13 );
+            canvas.drawText( String.valueOf( count ), getWidth() - 12 - offset, 16, numberColor );
         }
     }
 
