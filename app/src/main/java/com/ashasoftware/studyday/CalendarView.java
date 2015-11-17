@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -193,6 +194,16 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
             super.onDraw( canvas );
             //Desenha a borda.
             canvas.drawRect( 0, 0, getWidth(), getHeight(), BORDER_STYLE );
+
+            int left = 10;
+            for( Estudo estudo : App.getDatabase().getAllEstudos() ) {
+                if( date.getTime() / 86400000 == estudo.getDiaIni().getTimeInMillis() / 86400000 ) {
+                    Drawable d = getResources().getDrawable( R.drawable.pencil );
+                    d.setBounds( left, 10, left + 32, 42 );
+                    d.draw( canvas );
+                    left += 48;
+                }
+            }
         }
     }
 
