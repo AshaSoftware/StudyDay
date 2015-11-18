@@ -12,6 +12,8 @@ public class Aula {
     int dia;
     Materia materia;
 
+    public Aula() {}
+
     public Aula( Materia materia, long pIni, long pFim, int dia ) throws Exception {
         if( materia == null ) {
             throw new Exception();

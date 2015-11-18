@@ -13,6 +13,8 @@ public class NaoEscolar {
     String Nome, Descricao;
     Calendar diaIni, diaFim;
 
+    public NaoEscolar(){}
+
     public NaoEscolar( String pNome, String pDescricao, long pInicio, long pFim ) {
         Nome = pNome;
         Descricao = pDescricao;

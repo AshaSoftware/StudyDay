@@ -23,8 +23,6 @@ public class App extends Application {
 
     private static Interval interval;
 
-    private static File myFolder;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,10 +32,7 @@ public class App extends Application {
         dateFormat = new SimpleDateFormat( context.getResources().getString( R.string.date_pattern ) );
         timeFormat = new SimpleDateFormat( context.getResources().getString( R.string.short_time_pattern ) );
 
-        myFolder = new File( Environment.getExternalStorageDirectory(), "StudyDay" );
-        myFolder.mkdirs();
-
-        interval = Interval.open();
+        interval = new Interval();
 
     }
 
@@ -57,11 +52,6 @@ public class App extends Application {
         return dateFormat.format( date );
     }
 
-    public static Interval getInterval() {
-        return interval;
-    }
+    public static Interval getInterval() {return interval;}
 
-    public static File myFolder() {
-        return myFolder;
-    }
 }

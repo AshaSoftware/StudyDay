@@ -10,20 +10,59 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by tiago on 17/11/15.
  */
-public class Interval extends ArrayList<Interval.IntervalTime> {
+public class Interval{
+    int Codigo;
+
+    public int getCodigo() {
+        return Codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        Codigo = codigo;
+    }
+
+    private long ini;
+
+    public long getIni() {
+        return ini;
+    }
+
+    public void setIni( long ini ) {
+        this.ini = ini;
+    }
+
+    public long getFim() {
+        return fim;
+    }
+
+    public void setFim( long fim ) {
+        this.fim = fim;
+    }
+
+    private long fim;
+
+    public Interval( long ini, long fim ) {
+        this.fim = fim;
+        this.ini = ini;
+    }
 
     public Interval() {
     }
 
     public boolean isFree( long ini, long fim ) throws Exception {
-        for( IntervalTime it : this ) {
-            Log.v( "Tag","Entrou no for" );
-            if( ini >= it.getIni() && ini <= it.getFim() || fim >= it.getIni() && fim <= it.getFim() ) {
-                Log.v( "Tag","Bateu hora" );
+        Log.v("Tag_isFree", "Entrou na função");
+        List<Interval> it = App.getDatabase().getAllIntervals();
+        Log.v("Tag_isFree", "Existem " + it.size() + " intervalos no banco");
+        for( Interval i : it) {
+            Log.v( "Tag_isFree","Entrou no for" );
+            Log.v( "Tag_isFree","NE: " + ini + " |Aula: " + i.getIni() );
+            if( ini >= i.getIni() && ini <= i.getFim() || fim >= i.getIni() && fim <= i.getFim() || ini <= i.getIni() && fim >= i.getFim()) {
+                Log.v( "Tag_isFree","Bateu hora" );
                 throw new Exception();
             }
         }
@@ -31,11 +70,15 @@ public class Interval extends ArrayList<Interval.IntervalTime> {
     }
 
     public void add( long ini, long fim ) throws Exception {
-
-        if( isFree( ini, fim ) ) {
-            this.add( new IntervalTime( ini, fim ) );
-        } else {
-            throw new Exception();
+        Log.v( "Tag_AddNE","Entrou pra adicionar");
+        try{
+            Log.v( "Tag_AddNE","Vai tentar");
+            isFree(ini, fim);
+            Log.v("Tag_AddNE", "Opa! Livre");
+            App.getDatabase().addInterval(ini, fim);
+        }catch(Exception e){
+            Log.v( "Tag_AddNE","Epa! Ocupado");
+            throw e;
         }
     }
 
@@ -47,79 +90,26 @@ public class Interval extends ArrayList<Interval.IntervalTime> {
         }
 
         c.set( Calendar.HOUR, aula.getIni().get( Calendar.HOUR ) );
+        Log.v("Tag_addAula", "Hora: " + c.get(Calendar.HOUR));
         c.set( Calendar.MINUTE, aula.getIni().get( Calendar.MINUTE ) );
 
         do {
-            for( ; c.get( Calendar.DAY_OF_MONTH ) <= c.getActualMaximum( Calendar.DAY_OF_MONTH ); c.add( Calendar.DAY_OF_MONTH,7 ) ) {
-                Log.v( "Tag","Entrou no for " + c.get( Calendar.DAY_OF_MONTH ) + " " + c.get( Calendar.MONTH ) );
-                this.add( new IntervalTime(
-                        c.getTimeInMillis(),
-                        c.getTimeInMillis() + (aula.getFim().getTimeInMillis() - aula.getIni().getTimeInMillis()) ) );
+            Log.v( "Tag_AddAula_While","Entrou no while " + c.get( Calendar.DAY_OF_MONTH ) + "/" + c.get( Calendar.MONTH ) + "|  |" + c.getActualMaximum( Calendar.DAY_OF_MONTH ) );
+            for(int i=c.get( Calendar.DAY_OF_MONTH ) ; i <= c.getActualMaximum( Calendar.DAY_OF_MONTH ); i+=7 ) {
+                Log.v( "Tag_AddAula_For","Entrou no for " + c.get( Calendar.DAY_OF_MONTH ) + " " + c.get( Calendar.MONTH ) );
+                App.getDatabase().addInterval(c.getTimeInMillis(), c.getTimeInMillis() + (aula.getFim().getTimeInMillis() - aula.getIni().getTimeInMillis()));
+                Log.v("Tag_AddAula", "Diferença: " + (aula.getFim().getTimeInMillis() - aula.getIni().getTimeInMillis())/60000);
+                c.add(Calendar.DATE,7);
             }
         } while( c.get( Calendar.MONTH ) != 0 );
     }
 
     public void remove( long ini, long fim ) {
-        for( IntervalTime i : this ) {
+       for( Interval i : App.getDatabase().getAllIntervals() ) {
             if( i.getIni() == ini && i.getFim() == fim ) {
-                remove( i );
+                App.getDatabase().deleteInterval(i.getCodigo());
                 break;
             }
-        }
-    }
-
-    public static Interval open() {
-        File file = new File( App.myFolder(), "estudos" );
-        if( file.exists() ) {
-            try {
-                FileInputStream fis = new FileInputStream( file );
-                ObjectInputStream ois = new ObjectInputStream( fis );
-                Interval i = (Interval) ois.readObject();
-                ois.close();
-                return i;
-            } catch( Exception ignored ) {
-
-            }
-        }
-        return new Interval();
-    }
-
-    public void save() {
-        try {
-            FileOutputStream fos = new FileOutputStream( new File( App.myFolder(), "estudos" ) );
-            ObjectOutputStream oos = new ObjectOutputStream( fos );
-            oos.writeObject( this );
-            oos.flush();
-            oos.close();
-        } catch( Exception ignored ) {
-        }
-    }
-
-    public class IntervalTime {
-
-        private long ini;
-
-        public long getIni() {
-            return ini;
-        }
-
-        public void setIni( long ini ) {
-            this.ini = ini;
-        }
-
-        public long getFim() {
-            return fim;
-        }
-
-        public void setFim( long fim ) {
-            this.fim = fim;
-        }
-
-        private long fim;
-
-        public IntervalTime( long ini, long fim ) {
-            this.fim = fim;
-            this.ini = ini;
         }
     }
 }

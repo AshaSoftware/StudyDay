@@ -94,4 +94,5 @@
 
     <!-- Non-School -->
     <string name="show_naoescolar">Show Non-School Task</string>
+    <string name="show_naoescolar_timeerror">It\'s occupated. Choose another time</string>
 </resources>

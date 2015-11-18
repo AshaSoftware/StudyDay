@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -230,6 +231,7 @@ public class CalendarView extends FrameLayout implements View.OnClickListener {
             count = 0;
 
             for( Aula aula : App.getDatabase().getAllAulas() ) {
+                Log.v("Tag_Calendar", "Size Aulas:" + App.getDatabase().getAllAulas().size());
                 if( date.getDay() == aula.getDia() ) {
                     count++;
                 }
