@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity( i );
                 break;
             case R.id.drawer_item_estudo:
-                //new EstudoGenerate();
+                new EstudoGenerate();
                 break;
             default:
                 return false;

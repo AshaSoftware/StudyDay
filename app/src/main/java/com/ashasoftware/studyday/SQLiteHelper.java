@@ -156,25 +156,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addEstudo(int materia, String descricao, long inicio, long fim) throws Exception {
+    public void addEstudo(int materia, String descricao, long inicio, long fim) {
 
-        try {
-            App.getInterval().add(inicio, fim);
-        } catch (Exception e) {
-            throw e;
-        }
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("cod_materia", materia);
+            values.put("descricao_estudo", descricao);
+            values.put("dia_ini_estudo", inicio);
+            values.put("dia_fim_estudo", fim);
 
-        ContentValues values = new ContentValues();
-        values.put("cod_materia", materia);
-        values.put("descricao_estudo", descricao);
-        values.put("dia_ini_estudo", inicio);
-        values.put("dia_fim_estudo", fim);
+            db.insert("estudo", null, values);
 
-        db.insert("estudo", null, values);
+            db.close();
 
-        db.close();
     }
 
     public void addAula(int materia, long inicio, long fim, int dia) {
