@@ -129,6 +129,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.insert("avaliacao", null, values);
 
         db.close();
+
     }
 
     public void addNaoEscolar(String nome, String descricao, long inicio, long fim) {

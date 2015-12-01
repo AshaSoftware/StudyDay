@@ -91,9 +91,8 @@ public class EstudoView extends RelativeLayout {
 
         title.setText( "" + naoEscolar.getCodigoMateria() );
         description.setText( naoEscolar.getDescricao() );
-        String t1 = App.getDateFormated( naoEscolar.getDiaIni().getTime() ) + " ( " + App.getTimeFormated( naoEscolar.getDiaIni().getTime() ) + " )";
-        String t2 = App.getDateFormated( naoEscolar.getDiaFim().getTime() ) + " ( " + App.getTimeFormated( naoEscolar.getDiaFim().getTime() ) + " )";
-        interval.setText( t1 + "   -   " + t2 );
+        String t1 = App.getDateFormated( naoEscolar.getDiaIni().getTime() );
+        interval.setText( t1 );
     }
 
     public void setOnCommandListener( OnCommandListener onCommandListener ) {

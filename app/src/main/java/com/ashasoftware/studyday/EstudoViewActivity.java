@@ -54,7 +54,7 @@ public class EstudoViewActivity extends AppCompatActivity implements NaoEscolarV
     }
 
     private void update() {
-        Toast.makeText( App.getContext(), "" + App.getDatabase().getAllEstudos().size(), Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( App.getContext(), "" + App.getDatabase().getAllEstudos().size(), Toast.LENGTH_SHORT ).show();
         //Carrega a lista de atividades não-escolares e a exibe.
         list.setAdapter( new EstudoViewAdapter( App.getDatabase().getAllEstudos() ) );
     }
